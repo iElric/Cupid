@@ -6,6 +6,7 @@ defmodule Cupid.Matches.Match do
     belongs_to(:users_1, Cupid.Users.User, foreign_key: :user1_id)
     belongs_to(:users_2, Cupid.Users.User, foreign_key: :user2_id)
 
+    has_many(:messages, Cupid.Messages.Message)
     timestamps()
   end
 
