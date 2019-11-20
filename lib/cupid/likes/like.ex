@@ -3,8 +3,8 @@ defmodule Cupid.Likes.Like do
   import Ecto.Changeset
 
   schema "likes" do
-    field :like_from, :id
-    field :like_to, :id
+    belongs_to(:users, Cupid.Users.User)
+    belongs_to(:users, Cupid.Users.User)
 
     timestamps()
   end

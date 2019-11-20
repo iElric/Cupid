@@ -9,13 +9,35 @@ defmodule Cupid.Users.User do
     field :name, :string
     field :password_hash, :string
 
+    has_many(:likes, Cupid.Likes.Like, foreign_key: :like_from)
+    has_many(:likes, Cupid.Likes.Like, foreign_key: :like_to)
+    has_many(:photos, Cupid.Photos.Photo)
+
+    field :password, :string, virtual: true
+    field :password_confirmation, :string, virtual: true
+
     timestamps()
   end
 
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :name, :gender, :password_hash, :desc])
-    |> validate_required([:email, :name, :gender, :password_hash, :desc])
+    # cast keys from attrs passed into the change set
+    |> cast(attrs, [:email, :name, :password, :password_confirmation, :gender])
+      # this validation will check if both "password" and "password_confirmation" in the parameter map matches
+    |> validate_confirmation(:password)
+    |> validate_length(:password, min: 12) # too short
+    |> hash_password()
+    |> validate_required([:email, :name, :password_hash])
+    |> unique_constraint(:email)
+  end
+
+  def hash_password(cset) do
+    pw = get_change(cset, :password)
+    if pw do
+      change(cset, Argon2.add_hash(pw))
+    else
+      cset
+    end
   end
 end
