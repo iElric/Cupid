@@ -3,8 +3,9 @@ defmodule Cupid.Likes.Like do
   import Ecto.Changeset
 
   schema "likes" do
-    belongs_to(:users, Cupid.Users.User)
-    belongs_to(:users, Cupid.Users.User)
+    # have to have different association names
+    belongs_to(:user_like_from, Cupid.Users.User, foreign_key: :like_from_id)
+    belongs_to(:user_like_add, Cupid.Users.User, foreign_key: :like_to_id)
 
     timestamps()
   end
@@ -12,7 +13,8 @@ defmodule Cupid.Likes.Like do
   @doc false
   def changeset(like, attrs) do
     like
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:like_from_id, :like_to_id])
+    |> unique_constraint(:like_from_id, name: :likes_like_from_id_like_to_id)
+    |> validate_required([:like_from_id, :like_to_id])
   end
 end

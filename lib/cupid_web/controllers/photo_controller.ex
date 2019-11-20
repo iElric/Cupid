@@ -12,6 +12,8 @@ defmodule CupidWeb.PhotoController do
   end
 
   def create(conn, %{"photo" => photo_params}) do
+    # add current_user in photo parameters
+    photo_params = Map.put(photo_params, "user_id", conn.assigns[:current_user].id)
     with {:ok, %Photo{} = photo} <- Photos.create_photo(photo_params) do
       conn
       |> put_status(:created)
@@ -39,5 +41,13 @@ defmodule CupidWeb.PhotoController do
     with {:ok, %Photo{}} <- Photos.delete_photo(photo) do
       send_resp(conn, :no_content, "")
     end
+  end
+
+  # TODO: add a way to request photo, add a json response here
+  def file(conn, %{"id" => id}) do
+    photo = Photos.get_photo!(id)
+    dir  = Photo.photo_upload_dir(photo.uuid)
+    data = File.read!(Path.join(dir, photo.filename))
+    # render a json to show the pictures
   end
 end

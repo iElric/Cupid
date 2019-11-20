@@ -9,8 +9,8 @@ defmodule Cupid.Users.User do
     field :name, :string
     field :password_hash, :string
 
-    has_many(:likes, Cupid.Likes.Like, foreign_key: :like_from)
-    has_many(:likes, Cupid.Likes.Like, foreign_key: :like_to)
+    has_many(:likes_from, Cupid.Likes.Like, foreign_key: :like_from_id)
+    has_many(:likes_to, Cupid.Likes.Like, foreign_key: :like_to_id)
     has_many(:photos, Cupid.Photos.Photo)
 
     field :password, :string, virtual: true

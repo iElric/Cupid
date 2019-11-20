@@ -50,9 +50,14 @@ defmodule Cupid.Likes do
 
   """
   def create_like(attrs \\ %{}) do
-    %Like{}
-    |> Like.changeset(attrs)
-    |> Repo.insert()
+    {:ok, like} = %Like{}
+                  |> Like.changeset(attrs)
+                  |> Repo.insert(on_conflict: :nothing)
+    if is_nil(like.id) do
+      {:error, "Like relationship is unique"}
+    else
+      {:ok, like}
+    end
   end
 
   @doc """

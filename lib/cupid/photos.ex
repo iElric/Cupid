@@ -22,7 +22,12 @@ defmodule Cupid.Photos do
   end
 
   @doc """
-  Gets a single photo.
+  Get a photo with id, preload the user with it.
+
+  Access the user field the return photo
+
+  ## Examples
+      photo.user.name
 
   Raises `Ecto.NoResultsError` if the Photo does not exist.
 
@@ -35,7 +40,12 @@ defmodule Cupid.Photos do
       ** (Ecto.NoResultsError)
 
   """
-  def get_photo!(id), do: Repo.get!(Photo, id)
+
+  def get_photo!(id) do
+    Repo.one! from p in Photo,
+              where: p.id == ^id,
+              preload: [:user]
+  end
 
   @doc """
   Creates a photo.
