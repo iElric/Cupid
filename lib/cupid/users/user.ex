@@ -11,7 +11,13 @@ defmodule Cupid.Users.User do
 
     has_many(:likes_from, Cupid.Likes.Like, foreign_key: :like_from_id)
     has_many(:likes_to, Cupid.Likes.Like, foreign_key: :like_to_id)
+
     has_many(:photos, Cupid.Photos.Photo)
+    has_many(:interests, Cupid.Interest.Interests)
+    has_many(:tags, through: [:interests, :tag])
+
+    has_many(:user1s, Cupid.Matches.Match, foreign_key: :user1_id)
+    has_many(:user2s, Cupid.Matches.Match, foreign_key: :user2_id)
 
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
