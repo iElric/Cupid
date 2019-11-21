@@ -20,6 +20,12 @@ defmodule CupidWeb.Router do
     pipe_through :ajax
 
     resources "/sessions", SessionController, only: [:create], singleton: true
+    resources "/messages", MessageController, except: [:new, :edit]
+    resources "/matches", MatchController, except: [:new, :edit]
+    resources "/interest", InterestsController, except: [:new, :edit]
+    resources "/tags", TagController, except: [:new, :edit]
+    resources "/photos", PhotoController, except: [:new, :edit]
+    resources "/likes", LikeController, except: [:new, :edit]
     resources "/users", UserController
   end
 
