@@ -5,12 +5,13 @@ import {
   Switch,
   Route,
   NavLink,
-  Link
 } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import { Provider, connect } from "react-redux";
 import Login from "./login";
 import SignUp from "./signup";
+import Profile from "./profile";
+import AllPhotos from "./all_photos"
 import store from "./store";
 
 export default function init_page(root) {
@@ -34,12 +35,12 @@ function Page(props) {
           </Nav.Item>
           <Nav.Item>
             <NavLink
-              to="/users"
+              to="/profile"
               exact
               activeClassName="active"
               className="nav-link"
             >
-              Users
+              Profile
             </NavLink>
           </Nav.Item>
         </Nav>
@@ -60,6 +61,14 @@ function Page(props) {
 
         <Route exact path="/sign_up">
           <SignUp />
+        </Route>
+
+        <Route exact path="/all_photos">
+          <AllPhotos />
+        </Route>
+
+        <Route exact path="/profile">
+          <Profile />
         </Route>
 
       </Switch>

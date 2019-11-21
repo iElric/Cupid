@@ -41,7 +41,7 @@ class SignUp extends React.Component {
         }
         return (
             <div>
-              <h1>Log In</h1>
+              <h1>Sign Up</h1>
               { error_msg }
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
