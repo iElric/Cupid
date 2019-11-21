@@ -6,6 +6,8 @@ defmodule CupidWeb.PhotoController do
 
   action_fallback CupidWeb.FallbackController
 
+  plug CupidWeb.Plugs.RequireAuth when action in [:create, :update, :delete]
+
   def index(conn, _params) do
     photos = Photos.list_photos()
     render(conn, "index.json", photos: photos)
