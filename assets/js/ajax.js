@@ -46,12 +46,23 @@ export function submit_login(form) {
                     data: resp,
                 });
                 form.redirect('/');
-            }
-            else {
+            } else {
                 store.dispatch({
                     type: 'CHANGE_LOGIN',
-                    data: {errors: JSON.stringify(resp.errors)},
+                    data: { errors: JSON.stringify(resp.errors) },
                 });
             }
         });
+}
+
+export function get_profile() {
+    let id = JSON.parse(localStorage.getItem('session')).user_id;
+    console.log(id);
+    get('/users/' + id).then((resp) => {
+        console.log(resp.data);
+        store.dispatch({
+            type: 'SHOW_PROFILE',
+            data: resp.data
+        });
+    })
 }

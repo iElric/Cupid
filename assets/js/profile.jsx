@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { Form, Button, Alert } from "react-bootstrap";
 import { Redirect } from "react-router";
+import {get_profile} from './ajax';
 
 //import { submit_login } from './ajax';
 
@@ -33,7 +34,14 @@ class Profile extends React.Component {
       return <Redirect to={this.state.redirect} />;
     }
 
-    let { email, name, new_photo, description, all_photos, errors } = this.props;
+    let { email, name, new_photo, desc, all_photos, errors } = this.props;
+
+    if (email == null) {
+        get_profile();
+        return <div>
+            <p>Loading</p>
+        </div>
+    }
     let error_msg = null;
     if (errors) {
       error_msg = <Alert variant="danger">{errors}</Alert>;
@@ -47,6 +55,7 @@ class Profile extends React.Component {
           <Form.Control
             disabled
             type="text"
+            value = {email}
             onChange={ev => this.changed({ email: ev.target.value })}
           />
         </Form.Group>
@@ -55,6 +64,7 @@ class Profile extends React.Component {
           <Form.Control
             disabled
             type="text"
+            value = {name}
             onChange={ev => this.changed({ name: ev.target.value })}
           />
         </Form.Group>
@@ -62,7 +72,8 @@ class Profile extends React.Component {
           <Form.Label>Description</Form.Label>
           <Form.Control
             as="textarea"
-            onChange={ev => this.changed({ description: ev.target.value })}
+            value={desc}
+            onChange={ev => this.changed({ desc: ev.target.value })}
           />
         </Form.Group>
         <Form.Group controlId="upload">
