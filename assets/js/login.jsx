@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Form, Button, Alert} from 'react-bootstrap';
 import { Redirect } from 'react-router';
 
-//import { submit_login } from './ajax';
+import { submit_login } from './ajax';
 
 class Login extends React.Component {
     constructor(props) {
@@ -24,7 +24,7 @@ class Login extends React.Component {
 
     changed(data) {
         this.props.dispatch({
-            type: 'LOGIN',
+            type: 'CHANGE_LOGIN',
             data: data,
         });
     }

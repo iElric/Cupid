@@ -2,11 +2,7 @@ import store from "./store";
 
 export function post(path, body) {
     let state = store.getState();
-    //let token = state.session.token;
-    let token = "";
-    if (state.session) {
-        token = state.session.token;
-    }
+    let token = state.session == null ? null : state.session.token;
     return fetch("/ajax" + path, {
         method: "post",
         credentials: "same-origin",
@@ -22,7 +18,7 @@ export function post(path, body) {
 
 export function get(path) {
     let state = store.getState();
-    let token = state.session.token;
+    let token = state.session == null ? null : state.session.token;
 
     return fetch("/ajax" + path, {
         method: "get",
@@ -34,4 +30,28 @@ export function get(path) {
             "x-auth": token || ""
         })
     }).then(resp => resp.json());
+}
+
+export function submit_login(form) {
+    let state = store.getState();
+    let data = state.forms.login;
+
+    post('/sessions', data)
+        .then((resp) => {
+            console.log(resp);
+            if (resp.token) {
+                localStorage.setItem('session', JSON.stringify(resp));
+                store.dispatch({
+                    type: 'LOG_IN',
+                    data: resp,
+                });
+                form.redirect('/');
+            }
+            else {
+                store.dispatch({
+                    type: 'CHANGE_LOGIN',
+                    data: {errors: JSON.stringify(resp.errors)},
+                });
+            }
+        });
 }
