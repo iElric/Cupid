@@ -30,7 +30,7 @@ function login(st0 = { email: null, password: null, errors: null }, action) {
 }
 
 
-function profile(st0 = { email: null, name: null, new_photo: null, desc: null, all_photos: null, errors: null }, action) {
+function profile(st0 = { email: null, name: null, new_photo: null, desc: null, photo_desc: null, hint: null, all_photos: null, errors: null }, action) {
     switch (action.type) {
         case "SHOW_PROFILE":
             return Object.assign({}, st0, action.data);

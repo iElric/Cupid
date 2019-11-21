@@ -112,5 +112,11 @@ defmodule Cupid.Users do
     User.changeset(user, %{})
   end
 
+  def update_user_desc_by_id(id, desc) do
+    Repo.get_by(User, id: id)
+    |> Ecto.Changeset.change(%{desc: desc})
+    |> Repo.update()
+  end
+
 
 end

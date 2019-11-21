@@ -12,6 +12,7 @@ import Login from "./login";
 import SignUp from "./signup";
 import Profile from "./profile";
 import AllPhotos from "./all_photos"
+import UploadNewPhoto from "./upload"
 import store from "./store";
 
 export default function init_page(root) {
@@ -87,6 +88,10 @@ function Page(props) {
 
         <Route exact path="/profile">
           <Profile />
+        </Route>
+
+        <Route exact path="/upload_new_photo">
+          <UploadNewPhoto />
         </Route>
 
       </Switch>

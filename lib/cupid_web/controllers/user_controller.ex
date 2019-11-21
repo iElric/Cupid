@@ -27,8 +27,7 @@ defmodule CupidWeb.UserController do
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Users.get_user!(id)
-
-    with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
+    with {:ok, %User{} = user} <- Users.update_user_desc_by_id(id, user_params) do
       render(conn, "show.json", user: user)
     end
   end
