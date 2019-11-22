@@ -14,7 +14,8 @@ defmodule CupidWeb.PhotoController do
     photos =
       Enum.map(photos, fn p ->
         %{
-          photo: File.read!(Path.join(Photo.photo_upload_dir(p.uuid), p.filename)),
+          id: p.id,
+          data: File.read!(Path.join(Photo.photo_upload_dir(p.uuid), p.filename)),
           desc: p.desc
         }
       end)

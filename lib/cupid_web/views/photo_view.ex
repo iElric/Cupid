@@ -12,8 +12,7 @@ defmodule CupidWeb.PhotoView do
 
   def render("photo.json", %{photo: photo}) do
     %{id: photo.id,
-      uuid: photo.uuid,
-      filename: photo.filename,
+      photo: photo.data,
       desc: photo.desc}
   end
 end
