@@ -6,7 +6,7 @@ defmodule Cupid.Photos.Photo do
     field :desc, :string
     field :filename, :string
     field :uuid, :string
-
+    field :photo_upload, :any, virtual: true
     belongs_to(:user, Cupid.Users.User)
     timestamps()
   end

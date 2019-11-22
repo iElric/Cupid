@@ -29,8 +29,26 @@ function login(st0 = { email: null, password: null, errors: null }, action) {
     }
 }
 
+function upload_photo(st0 = { new_photo: null, photo_desc: null, errors: null }, action) {
+    switch (action.type) {
+        case "UPLOAD":
+            return Object.assign({}, st0, action.data);
+        default:
+            return st0;
+    }
+}
 
-function profile(st0 = { email: null, name: null, new_photo: null, desc: null, photo_desc: null, hint: null, all_photos: null, errors: null }, action) {
+function all_photos(st0 = { photos: null }, action) {
+    switch (action.type) {
+        case "ALL_PHOTOS":
+            return Object.assign({}, st0, action.data);
+        default:
+            return st0;
+    }
+}
+
+
+function profile(st0 = { email: null, name: null, desc: null, hint: null, errors: null }, action) {
     switch (action.type) {
         case "SHOW_PROFILE":
             return Object.assign({}, st0, action.data);
@@ -72,6 +90,8 @@ function root_reducer(st0, action) {
         session,
         login,
         profile,
+        upload_photo,
+        all_photos,
     });
     return deepFreeze(reducer(st0, action));
 }

@@ -85,6 +85,12 @@ class Profile extends React.Component {
           />
         </Form.Group>
 
+        <Form.Group controlId="submit">
+          <Button variant="primary" onClick={() => change_profile_desc(this)}>
+            Submit
+          </Button>
+        </Form.Group>
+
         <Button
           id="profile_upload_new_photo_button"
           onClick={() => this.setState({ redirect: "./upload_new_photo" })}
@@ -99,11 +105,7 @@ class Profile extends React.Component {
           Show All My Photos
         </Button>
 
-        <Form.Group controlId="submit">
-          <Button variant="primary" onClick={() => change_profile_desc(this)}>
-            Submit
-          </Button>
-        </Form.Group>
+        
       </div>
     );
   }

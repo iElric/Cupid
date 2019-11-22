@@ -101,17 +101,19 @@ export function change_profile_desc(form) {
 
 export function upload_photo(form) {
     let state = store.getState();
-    let data = state.profile;
-    console.log(data.new_photo)
+    let data = state.upload_photo;
 
     if (data.new_photo == null) {
         return;
     }
+
+    console.log(data.new_photo.name)
+
     let reader = new FileReader();
     reader.addEventListener("load", () => {
         console.log("post photos")
         post('/photos', {
-            photo: { desc: data.photo_desc, filename: data.new_photo.name, data: reader.result }
+            photo: { desc: data.photo_desc, filename: data.new_photo.name, photo_upload: reader.result }
         }).then((resp) => {
             if (resp.data) {
                 store.dispatch({
@@ -122,5 +124,6 @@ export function upload_photo(form) {
             }
         })
     })
+    reader.readAsDataURL(data.new_photo);
 
 }

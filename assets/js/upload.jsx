@@ -25,9 +25,18 @@ class UploadNewPhoto extends React.Component {
 
   changed(data) {
     this.props.dispatch({
-      type: "SHOW_PROFILE",
+      type: "UPLOAD",
       data: data
     });
+  }
+
+  file_changed(ev) {
+    let input = ev.target;
+    let file  = null;
+    if (input.files.length > 0) {
+      file = input.files[0];
+    }
+    this.changed({new_photo: file});
   }
 
   render() {
@@ -35,7 +44,7 @@ class UploadNewPhoto extends React.Component {
       return <Redirect to={this.state.redirect} />;
     }
 
-    let {email, name, new_photo, desc, photo_desc, hint, all_photos, errors} = this.props;
+    let {new_photo, photo_desc, errors} = this.props;
     return (
       <div>
         <h1>Upload New Photo</h1>
@@ -43,14 +52,14 @@ class UploadNewPhoto extends React.Component {
           <Form.Label>Upload Photos</Form.Label>
           <Form.Control
             type="file"
-            onChange={ev => this.changed({ new_photo: ev.target.value })}
+            onChange={(ev) => this.file_changed(ev)}
           />
         </Form.Group>
         <Form.Group controlId="photo_desc">
           <Form.Label>Photo Description</Form.Label>
           <Form.Control
             type="text"
-            onChange={ev => this.changed({ photo: ev.target.value })}
+            onChange={ev => this.changed({ photo_desc: ev.target.value })}
           />
         </Form.Group>
 
@@ -65,7 +74,7 @@ class UploadNewPhoto extends React.Component {
 }
 
 function state2props(state) {
-  return state.profile;
+  return state.upload_photo;
 }
 
 export default connect(state2props)(UploadNewPhoto);
