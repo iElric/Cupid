@@ -6,7 +6,7 @@ defmodule CupidWeb.PhotoController do
 
   action_fallback CupidWeb.FallbackController
 
-  plug CupidWeb.Plugs.RequireAuth when action in [:create, :update, :delete]
+  plug CupidWeb.Plugs.RequireAuth when action in [:index :create, :update, :delete]
 
   def index(conn, _params) do
     photos = Photos.list_user_photos(conn.assigns[:current_user].id)
@@ -56,11 +56,4 @@ defmodule CupidWeb.PhotoController do
     end
   end
 
-  # TODO: add a way to request photo, add a json response here
-  def file(conn, %{"id" => id}) do
-    photo = Photos.get_photo!(id)
-    dir = Photo.photo_upload_dir(photo.uuid)
-    data = File.read!(Path.join(dir, photo.filename))
-    # render a json to show the pictures
-  end
 end
