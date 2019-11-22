@@ -9,7 +9,16 @@ defmodule CupidWeb.PhotoController do
   plug CupidWeb.Plugs.RequireAuth when action in [:create, :update, :delete]
 
   def index(conn, _params) do
-    photos = Photos.list_photos()
+    photos = Photos.list_user_photos(conn.assigns[:current_user].id)
+
+    photos =
+      Enum.map(photos, fn p ->
+        %{
+          photo: File.read!(Path.join(Photo.photo_upload_dir(p.uuid), p.filename)),
+          desc: p.desc
+        }
+      end)
+    IO.inspect photos
     render(conn, "index.json", photos: photos)
   end
 
@@ -17,6 +26,7 @@ defmodule CupidWeb.PhotoController do
     # add current_user in photo parameters
     photo_params = Map.put(photo_params, "user_id", conn.assigns[:current_user].id)
     IO.inspect(photo_params)
+
     with {:ok, %Photo{} = photo} <- Photos.create_photo(photo_params) do
       conn
       |> put_status(:created)
@@ -49,7 +59,7 @@ defmodule CupidWeb.PhotoController do
   # TODO: add a way to request photo, add a json response here
   def file(conn, %{"id" => id}) do
     photo = Photos.get_photo!(id)
-    dir  = Photo.photo_upload_dir(photo.uuid)
+    dir = Photo.photo_upload_dir(photo.uuid)
     data = File.read!(Path.join(dir, photo.filename))
     # render a json to show the pictures
   end

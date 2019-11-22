@@ -21,6 +21,11 @@ defmodule Cupid.Photos do
     Repo.all(Photo)
   end
 
+  def list_user_photos(user_id) do
+    query = from(p in Photo, where: p.user_id == ^user_id)
+    Repo.all(query)
+  end
+
   @doc """
   Get a photo with id, preload the user with it.
 
@@ -42,9 +47,11 @@ defmodule Cupid.Photos do
   """
 
   def get_photo!(id) do
-    Repo.one! from p in Photo,
-              where: p.id == ^id,
-              preload: [:user]
+    Repo.one!(
+      from p in Photo,
+        where: p.id == ^id,
+        preload: [:user]
+    )
   end
 
   @doc """
