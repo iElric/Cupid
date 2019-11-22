@@ -38,7 +38,7 @@ function upload_photo(st0 = { new_photo: null, photo_desc: null, errors: null },
     }
 }
 
-function all_photos(st0 = { photos: null }, action) {
+function all_photos(st0 = { photos: null, desc: null, errors: null }, action) {
     switch (action.type) {
         case "ALL_PHOTOS":
             return Object.assign({}, st0, action.data);

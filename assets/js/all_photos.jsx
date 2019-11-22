@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { connect } from 'react-redux';
-import { Form, Button, Alert} from 'react-bootstrap';
-import { Redirect } from 'react-router';
+import {show_all_photos} from './ajax';
+import PhotoCard from './card';
 
 //import { submit_login } from './ajax';
 
@@ -35,22 +35,29 @@ class AllPhotos extends React.Component {
         }
         console.log("all_photos");
 
-        let { email, name, new_photo, all_photos, errors } = this.props;
+        let {photos, desc, errors } = this.props;
         let error_msg = null;
         if (errors) {
             error_msg = <Alert variant="danger">{ errors }</Alert>
         }
+        if (photos == null) {
+            show_all_photos();
+            return <p>Loading</p>
+        }
+
+        let photo = photos.map(x => <PhotoCard photo={x}/>)
         return (
             <div>
+                {error_msg}
               <h1>All Photos</h1>
-              
+              {photo}
             </div>
           );
     }
 }
 
 function state2props(state) {
-    return state.profile;
+    return state.all_photos;
 }
 
 export default connect(state2props)(AllPhotos);

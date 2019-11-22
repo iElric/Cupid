@@ -6,7 +6,7 @@ defmodule CupidWeb.PhotoController do
 
   action_fallback CupidWeb.FallbackController
 
-  plug CupidWeb.Plugs.RequireAuth when action in [:index :create, :update, :delete]
+  plug CupidWeb.Plugs.RequireAuth when action in [:index, :create, :update, :delete]
 
   def index(conn, _params) do
     photos = Photos.list_user_photos(conn.assigns[:current_user].id)

@@ -120,10 +120,20 @@ export function upload_photo(form) {
                     type: 'SHOW_PROFILE',
                     data: [resp.data],
                 })
-                form.redirect('/photos/' + resp.data.id);
+                form.redirect('/all_photos');
             }
         })
     })
     reader.readAsDataURL(data.new_photo);
 
+}
+
+export function show_all_photos() {
+    get('/photos').then((resp) => {
+        console.log(resp);
+        store.dispatch({
+            type: 'ALL_PHOTOS',
+            data: resp.data
+        })
+    })
 }
