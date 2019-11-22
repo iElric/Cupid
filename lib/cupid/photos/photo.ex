@@ -14,8 +14,8 @@ defmodule Cupid.Photos.Photo do
   @doc false
   def changeset(photo, attrs) do
     photo
-    |> cast(attrs, [:uuid, :filename, :desc, :photo_upload])
-    |> validate_required([:uuid, :filename, :user_id, :photo_upload])
+    |> cast(attrs, [:user_id, :desc, :photo_upload, :filename])
+    |> validate_required([:user_id, :desc, :photo_upload, :filename])
     |> generate_uuid()
     |> save_photo_upload()
   end
@@ -35,12 +35,15 @@ defmodule Cupid.Photos.Photo do
 
   def save_photo_upload(cset) do
     up = get_field(cset, :photo_upload)
+    file_name = get_field(cset, :filename)
     uuid = get_field(cset, :uuid)
     if up do
       dir = photo_upload_dir(uuid)
       File.mkdir_p!(dir)
-      File.copy!(up.path, Path.join(dir, up.filename))
-      put_change(cset, :filename, up.filename)
+      # write the base64 string of image to this location
+      # delete photo_upload since we don't need to insert it in database
+      File.write!(Path.join(dir, file_name), up)
+      delete_change(cset, :photo_upload)
     else
       cset
     end
