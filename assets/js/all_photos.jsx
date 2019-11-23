@@ -10,32 +10,11 @@ import PhotoCard from './card';
 class AllPhotos extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            redirect: null,
-        };
-    }
-
-    redirect(path) {
-        this.setState({
-            redirect: path,
-        });
-    }
-
-    changed(data) {
-        this.props.dispatch({
-            type: 'SHOW_PROFILE',
-            data: data,
-        });
     }
 
     render() {
-        if (this.state.redirect) {
-            return <Redirect to={this.state.redirect} />
-        }
-        console.log("all_photos");
 
-        let {photos, desc, errors } = this.props;
+        let {photos, errors } = this.props;
         let error_msg = null;
         if (errors) {
             error_msg = <Alert variant="danger">{ errors }</Alert>
@@ -45,12 +24,14 @@ class AllPhotos extends React.Component {
             return <p>Loading</p>
         }
 
-        let photo = photos.map(x => <PhotoCard photo={x}/>)
+        let photo = photos.map(x => <PhotoCard key= {x.id} photo={x}/>)
         return (
             <div>
                 {error_msg}
               <h1>All Photos</h1>
+              <div className="row">
               {photo}
+              </div>
             </div>
           );
     }

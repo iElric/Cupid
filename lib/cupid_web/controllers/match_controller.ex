@@ -3,11 +3,17 @@ defmodule CupidWeb.MatchController do
 
   alias Cupid.Matches
   alias Cupid.Matches.Match
+  alias Cupid.Users
 
   action_fallback CupidWeb.FallbackController
+  plug CupidWeb.Plugs.RequireAuth when action in [:index]
 
   def index(conn, _params) do
-    matches = Matches.list_matches()
+    ids = Matches.list_user_matches(conn.assigns[:current_user].id)
+    names = Enum.map(ids, fn x -> Users.get_user!(x).name end)
+
+    matches =
+      Enum.map(Enum.with_index(ids), fn {x, index} -> %{id: x, name: Enum.at(names, index)} end)
     render(conn, "index.json", matches: matches)
   end
 

@@ -13,3 +13,34 @@
     background-color: plum;
     border: 0px;
 }
+
+#chat {
+    width: 493px;
+    height: 300px;
+    border: 3px solid peru;
+    margin-top: 30px;
+    margin-left: 230px;
+}
+
+#chatInput {
+    width: 493px;
+    height: 100px;
+    border: none;
+    border-left: 2px solid peru;
+    border-right: 2px solid peru;
+    border-bottom: 2px solid peru;
+    margin-left: 230px;
+}
+
+#chatText {
+    width: 400px;
+    height: 90px;
+    border: none;
+}
+
+#chatSend {
+    background-color: aquamarine;
+    border: none;
+    position: relative;
+    margin-top: -30px;
+}

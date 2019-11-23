@@ -7,12 +7,18 @@ defmodule CupidWeb.PhotoView do
   end
 
   def render("show.json", %{photo: photo}) do
-    %{data: render_one(photo, PhotoView, "photo.json")}
+    %{data: render_one(photo, PhotoView, "create_photo.json")}
   end
 
   def render("photo.json", %{photo: photo}) do
     %{id: photo.id,
       photo: photo.data,
       desc: photo.desc}
+  end
+
+  def render("create_photo.json", _) do
+    %{
+       status: "success"
+    }
   end
 end

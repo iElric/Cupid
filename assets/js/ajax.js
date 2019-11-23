@@ -116,10 +116,6 @@ export function upload_photo(form) {
             photo: { desc: data.photo_desc, filename: data.new_photo.name, photo_upload: reader.result }
         }).then((resp) => {
             if (resp.data) {
-                store.dispatch({
-                    type: 'SHOW_PROFILE',
-                    data: [resp.data],
-                })
                 form.redirect('/all_photos');
             }
         })
@@ -131,9 +127,26 @@ export function upload_photo(form) {
 export function show_all_photos() {
     get('/photos').then((resp) => {
         console.log(resp);
+        let photos = [];
+        resp.data.map(x => photos.push(x));
+        console.log(photos);
         store.dispatch({
             type: 'ALL_PHOTOS',
-            data: resp.data
+            data: {
+                photos: photos
+            }
+        })
+    })
+}
+
+export function show_all_matches() {
+    get('/matches').then((resp) => {
+        console.log(resp);
+        store.dispatch({
+            type: 'MATCHES',
+            data: {
+                matches: resp.data
+            }
         })
     })
 }

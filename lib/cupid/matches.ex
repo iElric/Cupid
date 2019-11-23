@@ -21,6 +21,14 @@ defmodule Cupid.Matches do
     Repo.all(Match)
   end
 
+  def list_user_matches(user_id) do
+    query = from(m in Match, where: m.user1_id == ^user_id, select: m.user2_id)
+    list1 = Repo.all(query)
+    query = from(m in Match, where: m.user2_id == ^user_id, select: m.user1_id)
+    list2 = Repo.all(query)
+    list1 ++ list2
+  end
+
   @doc """
   Gets a single match.
 

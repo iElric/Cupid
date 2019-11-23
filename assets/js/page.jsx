@@ -13,6 +13,7 @@ import SignUp from "./signup";
 import Profile from "./profile";
 import AllPhotos from "./all_photos"
 import UploadNewPhoto from "./upload"
+import Matches from './matches'
 import store from "./store";
 
 export default function init_page(root) {
@@ -55,6 +56,16 @@ function Page(props) {
                   Users
                 </NavLink>
               </Nav.Item>
+              <Nav.Item>
+                <NavLink
+                  to="/matches"
+                  exact
+                  activeClassName="active"
+                  className="nav-link"
+                >
+                  Friends
+                </NavLink>
+              </Nav.Item>
             </Nav>
         </Col>
           <Col md = "2">
@@ -92,6 +103,9 @@ function Page(props) {
 
         <Route exact path="/upload_new_photo">
           <UploadNewPhoto />
+        </Route>
+        <Route exact path="/matches">
+          <Matches />
         </Route>
 
       </Switch>

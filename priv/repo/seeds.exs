@@ -12,6 +12,7 @@
 
 alias Cupid.Repo
 alias Cupid.Users.User
+alias Cupid.Matches.Match
 
 pw = Argon2.hash_pwd_salt("password1234")
 
@@ -19,3 +20,6 @@ Repo.insert!(%User{name: "Alice", email: "alice@cupid.com", gender: "Female", pa
 Repo.insert!(%User{name: "Bob", email: "bob@cupid.com", gender: "Male", password_hash: pw})
 Repo.insert!(%User{name: "Tom", email: "tom@cupid.com", gender: "Male", password_hash: pw})
 Repo.insert!(%User{name: "Jerry", email: "jerry@cupid.com", gender: "Male", password_hash: pw})
+
+Repo.insert!(%Match{user1_id: 1, user2_id: 2})
+Repo.insert!(%Match{user1_id: 3, user2_id: 1})

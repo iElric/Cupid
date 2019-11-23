@@ -11,6 +11,7 @@ defmodule CupidWeb.MatchView do
   end
 
   def render("match.json", %{match: match}) do
-    %{id: match.id}
+    IO.inspect(match)
+    %{id: match.id, name: match.name}
   end
 end
