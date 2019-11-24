@@ -19,7 +19,8 @@ defmodule CupidWeb.PhotoController do
           desc: p.desc
         }
       end)
-    IO.inspect photos
+
+    IO.inspect(photos)
     render(conn, "index.json", photos: photos)
   end
 
@@ -56,5 +57,4 @@ defmodule CupidWeb.PhotoController do
       send_resp(conn, :no_content, "")
     end
   end
-
 end

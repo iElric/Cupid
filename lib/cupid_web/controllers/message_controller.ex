@@ -6,6 +6,7 @@ defmodule CupidWeb.MessageController do
 
   action_fallback CupidWeb.FallbackController
 
+
   def index(conn, _params) do
     messages = Messages.list_messages()
     render(conn, "index.json", messages: messages)

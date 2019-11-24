@@ -52,51 +52,48 @@ export function submit_login(form) {
     let state = store.getState();
     let data = state.forms.login;
 
-    post('/sessions', data)
-        .then((resp) => {
-            console.log(resp);
-            if (resp.token) {
-                localStorage.setItem('session', JSON.stringify(resp));
-                store.dispatch({
-                    type: 'LOG_IN',
-                    data: resp,
-                });
-                form.redirect('/');
-            } else {
-                store.dispatch({
-                    type: 'CHANGE_LOGIN',
-                    data: { errors: JSON.stringify(resp.errors) },
-                });
-            }
-        });
+    post("/sessions", data).then(resp => {
+        console.log(resp);
+        if (resp.token) {
+            localStorage.setItem("session", JSON.stringify(resp));
+            store.dispatch({
+                type: "LOG_IN",
+                data: resp
+            });
+            form.redirect("/");
+        } else {
+            store.dispatch({
+                type: "CHANGE_LOGIN",
+                data: { errors: JSON.stringify(resp.errors) }
+            });
+        }
+    });
 }
 
 export function get_profile() {
-    let id = JSON.parse(localStorage.getItem('session')).user_id;
+    let id = JSON.parse(localStorage.getItem("session")).user_id;
     console.log(id);
-    get('/users/' + id).then((resp) => {
-
-
+    get("/users/" + id).then(resp => {
         console.log(resp.data);
         store.dispatch({
-            type: 'SHOW_PROFILE',
+            type: "SHOW_PROFILE",
             data: resp.data
         });
-    })
+    });
 }
 
 export function change_profile_desc(form) {
-    let id = JSON.parse(localStorage.getItem('session')).user_id;
+    let id = JSON.parse(localStorage.getItem("session")).user_id;
     let state = store.getState();
     let data = { user: state.profile.desc };
-    put('/users/' + id, data).then((resp) => {
-        console.log(resp)
-        Object.assign(resp.data, { hint: "success" })
+    put("/users/" + id, data).then(resp => {
+        console.log(resp);
+        Object.assign(resp.data, { hint: "success" });
         store.dispatch({
-            type: 'SHOW_PROFILE',
+            type: "SHOW_PROFILE",
             data: resp.data
-        })
-    })
+        });
+    });
 }
 
 export function upload_photo(form) {
@@ -107,46 +104,109 @@ export function upload_photo(form) {
         return;
     }
 
-    console.log(data.new_photo.name)
+    console.log(data.new_photo.name);
 
     let reader = new FileReader();
     reader.addEventListener("load", () => {
-        console.log("post photos")
-        post('/photos', {
-            photo: { desc: data.photo_desc, filename: data.new_photo.name, photo_upload: reader.result }
-        }).then((resp) => {
-            if (resp.data) {
-                form.redirect('/all_photos');
+        console.log("post photos");
+        post("/photos", {
+            photo: {
+                desc: data.photo_desc,
+                filename: data.new_photo.name,
+                photo_upload: reader.result
             }
-        })
-    })
+        }).then(resp => {
+            if (resp.data) {
+                form.redirect("/all_photos");
+            }
+        });
+    });
     reader.readAsDataURL(data.new_photo);
-
 }
 
 export function show_all_photos() {
-    get('/photos').then((resp) => {
+    get("/photos").then(resp => {
         console.log(resp);
         let photos = [];
         resp.data.map(x => photos.push(x));
         console.log(photos);
         store.dispatch({
-            type: 'ALL_PHOTOS',
+            type: "ALL_PHOTOS",
             data: {
                 photos: photos
             }
+        });
+    });
+}
+
+export function show_all_matches() {
+    get("/matches").then(resp => {
+        console.log(resp);
+        store.dispatch({
+            type: "MATCHES",
+            data: {
+                matches: resp.data
+            }
+        });
+    });
+}
+
+export function get_tags() {
+    get("/tags").then(resp => {
+        console.log(resp);
+        store.dispatch({
+            type: "GET_TAGS",
+            data: {
+                all_tags: resp.data
+            }
+        });
+    });
+}
+
+export function current_user_tags() {
+    get("/interest").then(resp => {
+        console.log(resp.data)
+        store.dispatch({
+            type: "ADD_TAGS",
+            data: { current_tag: resp.data }
         })
     })
 }
 
-export function show_all_matches() {
-    get('/matches').then((resp) => {
-        console.log(resp);
+export function get_my_interests() {
+    get("/interest").then(resp => {
+        console.log(resp.data)
         store.dispatch({
-            type: 'MATCHES',
-            data: {
-                matches: resp.data
-            }
+            type: "SHOW_PROFILE",
+            data: { my_interests: resp.data }
         })
     })
+}
+
+export function change_tags() {
+    let state = store.getState();
+    let added_tag = state.add_tags.added_tag;
+    let current_user_tag = state.add_tags.current_tag;
+    let current_user_tag_id = current_user_tag.map(x => x.tag_id);
+    console.log(current_user_tag_id)
+
+    let data = added_tag.filter(x => !current_user_tag_id.includes(x))
+    console.log(data);
+    if (added_tag === null || added_tag.length === 0) {
+        store.dispatch({
+            type: "ADD_TAGS",
+            data: {
+                errors: "No Tag Selected"
+            }
+        });
+    } else {
+        post("/interest", { interests: { ids: data } }).then(resp => {
+            store.dispatch({
+                type: "ADD_TAGS",
+                data: {
+                    status: resp.data
+                }
+            });
+        });
+    }
 }

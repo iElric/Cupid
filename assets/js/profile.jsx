@@ -5,7 +5,7 @@ import { Form, Button, Alert } from "react-bootstrap";
 import { Redirect } from "react-router";
 import { get_profile } from "./ajax";
 import {change_profile_desc} from "./ajax";
-
+import {get_my_interests} from "./ajax";
 //import { submit_login } from './ajax';
 
 class Profile extends React.Component {
@@ -13,7 +13,7 @@ class Profile extends React.Component {
     super(props);
 
     this.state = {
-      redirect: null
+      redirect: null,
     };
   }
 
@@ -35,7 +35,7 @@ class Profile extends React.Component {
       return <Redirect to={this.state.redirect} />;
     }
 
-    let { email, name, new_photo, desc, all_photos, hint, errors } = this.props;
+    let { email, name, new_photo, desc, all_photos, my_interests, hint, errors } = this.props;
 
     if (email == null) {
       get_profile();
@@ -45,6 +45,15 @@ class Profile extends React.Component {
         </div>
       );
     }
+    if (my_interests == null) {
+      get_my_interests();
+      return (
+        <div>
+          <p>Loading</p>
+        </div>
+      );
+    }
+
     let error_msg = null;
     if (errors) {
       error_msg = <Alert variant="danger">{errors}</Alert>;
@@ -53,6 +62,12 @@ class Profile extends React.Component {
     if (hint) {
         hint_msg = <Alert variant="primary">{hint}</Alert>
     }
+
+    let interest_name = my_interests.map(x => x.tag_name)
+    const reducer = (accumulator, currentValue) => accumulator + ", " + currentValue;
+    let interests = (interest_name.reduce(reducer))
+    console.log(interests)
+
     return (
       <div>
         <h1>Profile</h1>
@@ -85,6 +100,17 @@ class Profile extends React.Component {
           />
         </Form.Group>
 
+        <Form.Group controlId="interest">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            disabled
+            type="text"
+            value={interests}
+            onChange={ev => this.changed({ name: ev.target.value })}
+          />
+        </Form.Group>
+
+
         <Form.Group controlId="submit">
           <Button variant="primary" onClick={() => change_profile_desc(this)}>
             Submit
@@ -103,6 +129,13 @@ class Profile extends React.Component {
           onClick={() => this.setState({ redirect: "./all_photos" })}
         >
           Show All My Photos
+        </Button>
+
+        <Button
+          id="profile_add_tag_button"
+          onClick={() => this.setState({ redirect: "./add_tags" })}
+        >
+          Add Interests
         </Button>
 
         

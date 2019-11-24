@@ -48,7 +48,7 @@ function all_photos(st0 = { photos: null, errors: null }, action) {
 }
 
 
-function profile(st0 = { email: null, name: null, desc: null, hint: null, errors: null }, action) {
+function profile(st0 = { email: null, name: null, desc: null, my_interests: null, hint: null, errors: null }, action) {
     switch (action.type) {
         case "SHOW_PROFILE":
             return Object.assign({}, st0, action.data);
@@ -61,6 +61,17 @@ function matches(st0 = { matches: null, selected: null }, action) {
     switch (action.type) {
         case "MATCHES":
             return Object.assign({}, st0, action.data);
+        default:
+            return st0;
+    }
+}
+
+function add_tags(st0 = { all_tags: null, current_tag: null, added_tag: null, errors: null, status: null }, action) {
+    switch (action.type) {
+        case "GET_TAGS":
+            return Object.assign({}, st0, action.data);
+        case "ADD_TAGS":
+            return Object.assign({}, st0, action.data)
         default:
             return st0;
     }
@@ -102,6 +113,7 @@ function root_reducer(st0, action) {
         upload_photo,
         all_photos,
         matches,
+        add_tags,
     });
     return deepFreeze(reducer(st0, action));
 }

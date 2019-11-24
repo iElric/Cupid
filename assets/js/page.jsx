@@ -14,6 +14,7 @@ import Profile from "./profile";
 import AllPhotos from "./all_photos"
 import UploadNewPhoto from "./upload"
 import Matches from './matches'
+import AddTag from './add_tag'
 import store from "./store";
 
 export default function init_page(root) {
@@ -106,6 +107,10 @@ function Page(props) {
         </Route>
         <Route exact path="/matches">
           <Matches />
+        </Route>
+
+        <Route exact path="/add_tags">
+          <AddTag />
         </Route>
 
       </Switch>

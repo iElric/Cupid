@@ -1,6 +1,7 @@
 defmodule CupidWeb.InterestsView do
   use CupidWeb, :view
   alias CupidWeb.InterestsView
+  alias Cupid.Tags
 
   def render("index.json", %{interest: interest}) do
     %{data: render_many(interest, InterestsView, "interests.json")}
@@ -11,6 +12,11 @@ defmodule CupidWeb.InterestsView do
   end
 
   def render("interests.json", %{interests: interests}) do
-    %{id: interests.id}
+    name = Tags.get_tag!(interests.tag_id).name
+    %{id: interests.id, tag_id: interests.tag_id, tag_name: name}
+  end
+
+  def render("success.json", _) do
+    %{data: "success"}
   end
 end
