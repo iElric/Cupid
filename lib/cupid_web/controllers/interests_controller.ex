@@ -8,7 +8,7 @@ defmodule CupidWeb.InterestsController do
   plug CupidWeb.Plugs.RequireAuth when action in [:index, :create, :update, :delete]
   def index(conn, _params) do
     IO.inspect("index")
-    interest = Interest.list_interest()
+    interest = Interest.list_interest_by_user_id(conn.assigns[:current_user].id)
     render(conn, "index.json", interest: interest)
   end
 

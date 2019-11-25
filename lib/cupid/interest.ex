@@ -21,6 +21,11 @@ defmodule Cupid.Interest do
     Repo.all(Interests)
   end
 
+  def list_interest_by_user_id(user_id) do
+    query = from(m in Interests, where: m.user_id == ^user_id)
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single interests.
 

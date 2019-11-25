@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { Form, Button, Alert } from "react-bootstrap";
 import { Redirect } from "react-router";
 import { get_profile } from "./ajax";
-import {change_profile_desc} from "./ajax";
-import {get_my_interests} from "./ajax";
+import { change_profile_desc } from "./ajax";
+import { get_my_interests } from "./ajax";
 //import { submit_login } from './ajax';
 
 class Profile extends React.Component {
@@ -13,7 +13,7 @@ class Profile extends React.Component {
     super(props);
 
     this.state = {
-      redirect: null,
+      redirect: null
     };
   }
 
@@ -35,7 +35,16 @@ class Profile extends React.Component {
       return <Redirect to={this.state.redirect} />;
     }
 
-    let { email, name, new_photo, desc, all_photos, my_interests, hint, errors } = this.props;
+    let {
+      email,
+      name,
+      new_photo,
+      desc,
+      all_photos,
+      my_interests,
+      hint,
+      errors
+    } = this.props;
 
     if (email == null) {
       get_profile();
@@ -60,13 +69,19 @@ class Profile extends React.Component {
     }
     let hint_msg = null;
     if (hint) {
-        hint_msg = <Alert variant="primary">{hint}</Alert>
+      hint_msg = <Alert variant="primary">{hint}</Alert>;
     }
 
-    let interest_name = my_interests.map(x => x.tag_name)
-    const reducer = (accumulator, currentValue) => accumulator + ", " + currentValue;
-    let interests = (interest_name.reduce(reducer))
-    console.log(interests)
+    let interest_name = my_interests.map(x => x.tag_name);
+    console.log(interest_name);
+
+    let interests = "";
+    if (interest_name.length > 0) {
+      const reducer = (accumulator, currentValue) =>
+        accumulator + ", " + currentValue;
+      interests = interest_name.reduce(reducer);
+      console.log(interests);
+    }
 
     return (
       <div>
@@ -110,7 +125,6 @@ class Profile extends React.Component {
           />
         </Form.Group>
 
-
         <Form.Group controlId="submit">
           <Button variant="primary" onClick={() => change_profile_desc(this)}>
             Submit
@@ -123,7 +137,7 @@ class Profile extends React.Component {
         >
           Upload New Photo
         </Button>
-        
+
         <Button
           id="profile_show_all_photos_button"
           onClick={() => this.setState({ redirect: "./all_photos" })}
@@ -137,8 +151,6 @@ class Profile extends React.Component {
         >
           Add Interests
         </Button>
-
-        
       </div>
     );
   }
