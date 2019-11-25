@@ -165,22 +165,22 @@ export function get_tags() {
 
 export function current_user_tags() {
     get("/interest").then(resp => {
-        console.log(resp.data)
+        console.log(resp.data);
         store.dispatch({
             type: "ADD_TAGS",
             data: { current_tag: resp.data }
-        })
-    })
+        });
+    });
 }
 
 export function get_my_interests() {
     get("/interest").then(resp => {
-        console.log(resp.data)
+        console.log(resp.data);
         store.dispatch({
             type: "SHOW_PROFILE",
             data: { my_interests: resp.data }
-        })
-    })
+        });
+    });
 }
 
 export function change_tags() {
@@ -188,10 +188,7 @@ export function change_tags() {
     let added_tag = state.add_tags.added_tag;
     let current_user_tag = state.add_tags.current_tag;
     let current_user_tag_id = current_user_tag.map(x => x.tag_id);
-    console.log(current_user_tag_id)
-
-    let data = added_tag.filter(x => !current_user_tag_id.includes(x))
-    console.log(data);
+    console.log(current_user_tag_id);
     if (added_tag === null || added_tag.length === 0) {
         store.dispatch({
             type: "ADD_TAGS",
@@ -199,11 +196,14 @@ export function change_tags() {
                 errors: "No Tag Selected"
             }
         });
+        return;
     } else {
+        let data = added_tag.filter(x => !current_user_tag_id.includes(x));
         post("/interest", { interests: { ids: data } }).then(resp => {
             store.dispatch({
                 type: "ADD_TAGS",
                 data: {
+                    errors: null,
                     status: resp.data
                 }
             });

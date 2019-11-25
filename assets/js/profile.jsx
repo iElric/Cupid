@@ -101,7 +101,7 @@ class Profile extends React.Component {
         </Form.Group>
 
         <Form.Group controlId="interest">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Interest</Form.Label>
           <Form.Control
             disabled
             type="text"
