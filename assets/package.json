@@ -6,6 +6,7 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
+    "@khanacademy/react-multi-select": "^0.3.3",
     "bootstrap": "^4.3.1",
     "deep-freeze-strict": "^1.1.1",
     "jquery": "^3.4.1",
