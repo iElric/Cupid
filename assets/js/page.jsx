@@ -14,6 +14,8 @@ import Profile from "./profile";
 import AllPhotos from "./all_photos"
 import store from "./store";
 import { Index } from "./mock_page"
+import Community from "./community"
+
 
 export default function init_page(root) {
   let tree = (
@@ -47,7 +49,7 @@ function Page(props) {
                 </Nav.Item>
               <Nav.Item>
                 <NavLink
-                  to="/users"
+                  to="/community"
                   exact
                   activeClassName="active"
                   className="nav-link"
@@ -78,6 +80,10 @@ function Page(props) {
         <Route exact path="/all_photos">
           <AllPhotos />
         </Route>
+
+          <PrivateRoute exact path="/community">
+              <Community />
+          </PrivateRoute>
 
         <PrivateRoute exact path="/profile">
           <Profile />
