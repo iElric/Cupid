@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink,
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    NavLink, Redirect, withRouter,
 } from "react-router-dom";
 import { Navbar, Nav, Col } from "react-bootstrap";
 import { Provider, connect } from "react-redux";
@@ -13,6 +13,7 @@ import SignUp from "./signup";
 import Profile from "./profile";
 import AllPhotos from "./all_photos"
 import store from "./store";
+import { Index } from "./mock_page"
 
 export default function init_page(root) {
   let tree = (
@@ -51,7 +52,7 @@ function Page(props) {
                   activeClassName="active"
                   className="nav-link"
                 >
-                  Users
+                  Community
                 </NavLink>
               </Nav.Item>
             </Nav>
@@ -63,18 +64,11 @@ function Page(props) {
 
       <Switch>
           <Route exact path="/">
-              <h1>This is the index page of Cupid</h1>
+              <Index />
           </Route>
         <Route exact path="/login">
           <Login />
-          <NavLink
-            to="/sign_up"
-            exact
-            activeClassName="active"
-            className="nav-link"
-          >
-           Don't have an account? Sign Up Now!
-          </NavLink>
+
         </Route>
 
         <Route exact path="/sign_up">
@@ -85,27 +79,45 @@ function Page(props) {
           <AllPhotos />
         </Route>
 
-        <Route exact path="/profile">
+        <PrivateRoute exact path="/profile">
           <Profile />
-        </Route>
+        </PrivateRoute>
 
       </Switch>
     </Router>
   );
 }
 
-function PrivateRoute() {
-
+function PrivateRoute({ children, ...rest }) {
+    let session = store.getState().session;
+    return (
+        <Route
+            {...rest}
+            render={( { location }) =>
+                session  ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: '/login',
+                            state: { from: location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
 }
 
 
-let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
+let Session = withRouter(connect(({session}) => ({session}))(({session, dispatch, history}) => {
   function logout(ev) {
     ev.preventDefault();
     localStorage.removeItem('session');
     dispatch({
       type: 'LOG_OUT',
     });
+    history.push('/');
   }
 
   if (session) {
@@ -131,4 +143,7 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
         </Nav>
     );
   }
-});
+}));
+
+
+

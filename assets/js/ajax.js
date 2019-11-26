@@ -32,25 +32,49 @@ export function get(path) {
     }).then(resp => resp.json());
 }
 
+export function register(form) {
+    let state = store.getState();
+    let data = state.forms.signup;
+    post('/users', {'user': data})
+        .then((resp) => {
+            if (resp.token) {
+                localStorage.setItem('session', JSON.stringify(resp));
+                store.dispatch({
+                    type: 'RESET_REG',
+                });
+                store.dispatch({
+                    type: 'LOG_IN',
+                    data: resp,
+                });
+                form.redirect();
+            } else {
+                form.display_error(resp.errors);
+            }
+        });
+}
+
 export function submit_login(form) {
     let state = store.getState();
     let data = state.forms.login;
 
     post('/sessions', data)
         .then((resp) => {
-            console.log(resp);
             if (resp.token) {
                 localStorage.setItem('session', JSON.stringify(resp));
                 store.dispatch({
                     type: 'LOG_IN',
                     data: resp,
                 });
-                form.redirect('/');
+                store.dispatch({
+                    type: 'RESET_LOGIN'
+                });
+                form.redirect();
             }
             else {
+                console.log(resp.errors);
                 store.dispatch({
                     type: 'CHANGE_LOGIN',
-                    data: {errors: JSON.stringify(resp.errors)},
+                    data: {errors: resp.errors},
                 });
             }
         });

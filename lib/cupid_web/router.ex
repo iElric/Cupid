@@ -20,6 +20,7 @@ defmodule CupidWeb.Router do
     pipe_through :ajax
 
     resources "/sessions", SessionController, only: [:create], singleton: true
+    resources "/users", UserController, only: [:create]
   end
 
   pipeline :api do

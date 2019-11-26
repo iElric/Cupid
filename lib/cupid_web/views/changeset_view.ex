@@ -9,6 +9,18 @@ defmodule CupidWeb.ChangesetView do
   """
   def translate_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+    |> post_process
+  end
+
+  defp post_process(%{} = map) do
+    map
+    |> Enum.map(
+         fn {k, v} ->
+            k = if k == :password_hash, do: :password, else: k;
+           "#{k} #{v}!"
+           |> String.capitalize
+         end
+       )
   end
 
   def render("error.json", %{changeset: changeset}) do
