@@ -78,6 +78,16 @@ function add_tags(st0 = { all_tags: null, current_tag: null, added_tag: null, er
 }
 
 
+function users(st0 = { info: null }, action) {
+    switch (action.type) {
+        case "USERS":
+            return Object.assign({}, st0, action.data);
+        default:
+            return st0;
+    }
+}
+
+
 function forms(st0, action) {
     let reducer = combineReducers({
         signup,
@@ -114,9 +124,11 @@ function root_reducer(st0, action) {
         all_photos,
         matches,
         add_tags,
+        users,
     });
     return deepFreeze(reducer(st0, action));
 }
+
 
 
 let store = createStore(root_reducer);

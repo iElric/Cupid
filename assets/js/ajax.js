@@ -210,3 +210,15 @@ export function change_tags() {
         });
     }
 }
+
+export function get_recommendation() {
+    get("/photos").then(resp => {
+        console.log(resp);
+        store.dispatch({
+            type: "USERS",
+            data: {
+                info: resp.data
+            }
+        });
+    });
+}
