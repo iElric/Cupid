@@ -19,4 +19,8 @@ defmodule CupidWeb.InterestsView do
   def render("success.json", _) do
     %{data: "success"}
   end
+
+  def render("browse.json", %{match_user_id: match_user_id}) do
+    %{data: match_user_id}
+  end
 end

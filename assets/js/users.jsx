@@ -6,6 +6,7 @@ import { Redirect } from "react-router";
 import { FaSmile, FaSadTear, FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { IconButton } from "@material-ui/core";
 import { get_recommendation } from "./ajax";
+import { get_my_interests_photo_by_id} from "./ajax";
 //import { submit_login } from './ajax';
 
 class Users extends React.Component {
@@ -29,6 +30,61 @@ class Users extends React.Component {
       data: data
     });
   }
+
+  nextPhoto() {
+    let { current_photos, photo_index } = this.props;
+    if (current_photos.length <= photo_index + 1) {
+      alert("last photo of this user");
+    } else {
+      photo_index = photo_index + 1;
+      this.props.dispatch({
+        type: "USERS",
+        data: { photo_index: photo_index }
+      });
+    }
+  }
+
+  previousPhoto() {
+    let { current_photos, photo_index } = this.props;
+    if (photo_index === 0) {
+      alert("first photo of this user");
+    } else {
+      photo_index = photo_index - 1;
+      this.props.dispatch({
+        type: "USERS",
+        data: { photo_index: photo_index }
+      });
+    }
+  }
+
+  like() {
+    let {info, user_index} = this.props;
+
+    // db operation
+    if (info.length <= user_index + 1) {
+      alert("last recommend user");
+    } else {
+      user_index = user_index + 1;
+      this.props.dispatch({
+        type: "USERS",
+        data: { current_photos: null, user_index: user_index }
+      });
+    }
+  }
+
+  dislike() {
+    let {info, user_index} = this.props;
+    if (info.length <= user_index + 1) {
+      alert("last recommend user");
+    } else {
+      user_index = user_index + 1;
+      this.props.dispatch({
+        type: "USERS",
+        data: { current_photos: null, photo_index: 0, user_index: user_index }
+      });
+    }
+  }
+
   clickIcon() {
     alert("click icon");
   }
@@ -38,44 +94,61 @@ class Users extends React.Component {
       return <Redirect to={this.state.redirect} />;
     }
 
-    let { info } = this.props;
+    let { info, current_photos, user_index, photo_index } = this.props;
     if (info == null) {
       get_recommendation();
       return <p>Loading</p>;
     }
-    console.log(info);
-    let photo_info = info[0].photo;
+
+    if (current_photos == null) {
+      get_my_interests_photo_by_id(info[user_index]);
+      return <p>Loading</p>;
+    }
+
+    let disableNextPhoto = false;
+    if (current_photos.length <= photo_index + 1) {
+      disableNextPhoto = true;
+    }
+
+    let photo_info = current_photos[photo_index].photo;
     return (
       <div>
         <div className="row" id="users">
-          <div className="col-2" id="left_arrow">
-            <IconButton onClick={() => this.clickIcon()}>
+          <div className="col-3" id="left_arrow">
+            <IconButton onClick={() => this.previousPhoto()}>
               <FaArrowLeft size="3em" color="pink" />
             </IconButton>
           </div>
-          <div className="col-4">
+          <div className="col-6">
             <div className="row">
-              <Card style={{ width: "20rem", height: "35rem" }}>
+              <div className="col-12 p-0" >
+              <Card>
                 <Card.Header id="user_name">Name</Card.Header>
-                <Card.Img height="80%" src={photo_info} />
+                {/* <img src={photo_info} width={100 + 'px'}></img> */}
+                <Card.Img id="image" src={photo_info} width='100px'/>
                 <Card.Body id="user_text">
-                  <Card.Text>{info[0].desc}</Card.Text>
+                  <Card.Text>{current_photos[photo_index].desc}</Card.Text>
                 </Card.Body>
               </Card>
+              </div>
             </div>
-            <div className="row">
-              <IconButton onClick={() => this.clickIcon()}>
-                <FaSadTear size="3em" color="light-blue" />
+            <div className="row" id="face_icons">
+              <div className="col-6">
+              <IconButton onClick={() => this.dislike()}>
+                <FaSadTear id="cry"size="3em" color="light-blue" />
                 Pass
               </IconButton>
-              <IconButton onClick={() => this.clickIcon()}>
+              </div>
+              <div className="col-6" >
+              <IconButton onClick={() => this.like()}>
                 <FaSmile id="smile" size="3em" />
                 Like
               </IconButton>
+              </div>
             </div>
           </div>
-          <div className="col-1" id="right_arrow">
-            <IconButton onClick={() => this.clickIcon()}>
+          <div className="col-3" id="right_arrow">
+            <IconButton onClick={() => this.nextPhoto()}>
               <FaArrowRight size="3em" color="pink" />
             </IconButton>
           </div>

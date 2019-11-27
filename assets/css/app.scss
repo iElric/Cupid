@@ -56,13 +56,25 @@
     color: lightcoral;
 }
 
+#cry {
+    color: lightblue;
+}
+
+#face_icons {
+    margin-top: 0px;
+}
+
 #left_arrow,
 #right_arrow {
     margin-top: 20%;
 }
 
+#right_arrow {
+    text-align: right;
+}
+
 #users {
-    margin-left: 10%
+    align-content: center
 }
 
 #user_name {
@@ -76,4 +88,26 @@
 #user_text {
     background-color: yellowgreen;
     color: white;
+}
+
+#center {
+    align-content: center;
+}
+
+#image {
+    max-height: 500px;
+    background-size: contain;
+    resize: both;
+}
+
+#card {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    resize: both;
 }

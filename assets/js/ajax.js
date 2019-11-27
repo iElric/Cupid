@@ -212,7 +212,7 @@ export function change_tags() {
 }
 
 export function get_recommendation() {
-    get("/photos").then(resp => {
+    get("/find_friends").then(resp => {
         console.log(resp);
         store.dispatch({
             type: "USERS",
@@ -221,4 +221,17 @@ export function get_recommendation() {
             }
         });
     });
+}
+
+export function get_my_interests_photo_by_id(id) {
+    get("/match_photos/" + id).then(resp => {
+        store.dispatch({
+            type: "USERS",
+            data: {
+                current_photos: resp.data
+            }
+        });
+        console.log(resp.data)
+    })
+
 }
