@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
-import { Card } from "react-bootstrap";
+import { Card, Alert} from "react-bootstrap";
 import { Redirect } from "react-router";
 import { FaSmile, FaSadTear, FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { IconButton } from "@material-ui/core";
@@ -14,7 +14,8 @@ class Users extends React.Component {
     super(props);
 
     this.state = {
-      redirect: null
+      redirect: null,
+      errors: null
     };
   }
 
@@ -34,26 +35,28 @@ class Users extends React.Component {
   nextPhoto() {
     let { current_photos, photo_index } = this.props;
     if (current_photos.length <= photo_index + 1) {
-      alert("last photo of this user");
+      this.setState({errors: "This is the last photo of this user"})
     } else {
       photo_index = photo_index + 1;
       this.props.dispatch({
         type: "USERS",
         data: { photo_index: photo_index }
       });
+      this.setState({errors: null})
     }
   }
 
   previousPhoto() {
     let { current_photos, photo_index } = this.props;
     if (photo_index === 0) {
-      alert("first photo of this user");
+      this.setState({errors: "This is the first photo of this user"})
     } else {
       photo_index = photo_index - 1;
       this.props.dispatch({
         type: "USERS",
         data: { photo_index: photo_index }
       });
+      this.setState({errors: null})
     }
   }
 
@@ -62,26 +65,29 @@ class Users extends React.Component {
 
     // db operation
     if (info.length <= user_index + 1) {
-      alert("last recommend user");
+      this.setState({errors: "This is the last recommend user"})
     } else {
       user_index = user_index + 1;
       this.props.dispatch({
         type: "USERS",
         data: { current_photos: null, user_index: user_index }
       });
+      this.setState({errors: null})
     }
   }
 
   dislike() {
     let {info, user_index} = this.props;
     if (info.length <= user_index + 1) {
-      alert("last recommend user");
+      this.setState({errors: "This is the last recommend user"})
+      //alert("last recommend user");
     } else {
       user_index = user_index + 1;
       this.props.dispatch({
         type: "USERS",
         data: { current_photos: null, photo_index: 0, user_index: user_index }
       });
+      this.setState({errors: null})
     }
   }
 
@@ -105,14 +111,16 @@ class Users extends React.Component {
       return <p>Loading</p>;
     }
 
-    let disableNextPhoto = false;
-    if (current_photos.length <= photo_index + 1) {
-      disableNextPhoto = true;
+    let error_msg = null;
+    if (this.state.errors) {
+      error_msg = <Alert variant="danger">{this.state.errors}</Alert>
     }
 
-    let photo_info = current_photos[photo_index].photo;
+    let photo_info = current_photos.length=== 0 ? "" :current_photos[photo_index].photo
+    let photo_desc = current_photos.length=== 0 ? "" :current_photos[photo_index].desc
     return (
       <div>
+        {error_msg}
         <div className="row" id="users">
           <div className="col-3" id="left_arrow">
             <IconButton onClick={() => this.previousPhoto()}>
@@ -125,9 +133,9 @@ class Users extends React.Component {
               <Card>
                 <Card.Header id="user_name">Name</Card.Header>
                 {/* <img src={photo_info} width={100 + 'px'}></img> */}
-                <Card.Img id="image" src={photo_info} width='100px'/>
+                <Card.Img id="image" src={photo_info} width='100px' alt="This User doesn't have any photos"/>
                 <Card.Body id="user_text">
-                  <Card.Text>{current_photos[photo_index].desc}</Card.Text>
+                  <Card.Text>{photo_desc}</Card.Text>
                 </Card.Body>
               </Card>
               </div>
