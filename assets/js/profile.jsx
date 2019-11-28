@@ -6,6 +6,7 @@ import { Redirect } from "react-router";
 import { get_profile } from "./ajax";
 import { get_my_interests } from "./ajax";
 import { FaHeart} from "react-icons/fa";
+import {IoIosMail} from "react-icons/io"
 import { IconButton } from "@material-ui/core";
 //import { submit_login } from './ajax';
 
@@ -85,13 +86,15 @@ class Profile extends React.Component {
               Upload New Photo
         </IconButton>
 
+        <IoIosMail />
+
         <IconButton onClick={() => this.setState({ redirect: "./all_photos" })}>
               <FaHeart className="layer" size="1em" color="pink" />
               Show All My Photos
         </IconButton>
         {error_msg}
 
-        <div className="col-md">
+        <div className="col-md profile-item">
           <span>Email</span>
           <hr />
           <Alert variant="success">
@@ -99,7 +102,7 @@ class Profile extends React.Component {
           </Alert>
         </div>
 
-        <div className="col-md">
+        <div className="col-md profile-item">
           <span>Name</span>
           <hr />
           <Alert variant="warning">
@@ -108,7 +111,7 @@ class Profile extends React.Component {
         </div>
         
 
-        <div className="col-md">
+        <div className="col-md profile-item">
           <span>Description</span>
           <Button
             className="align-right-button"
@@ -124,7 +127,7 @@ class Profile extends React.Component {
           </Alert>
         </div>
 
-        <div className="col-md">
+        <div className="col-md profile-item">
           <span>My Interests</span>
           <Button className="align-right-button">Add Interests</Button>
           <hr />

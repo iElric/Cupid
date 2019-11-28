@@ -101,6 +101,10 @@ class Users extends React.Component {
       return <p>Loading</p>;
     }
 
+    if (info.length === 0) {
+      return <Alert> Sorry, there is no recommend user for you now</Alert>
+    }
+
     if (current_photos == null) {
       get_my_interests_photo_by_id(info[user_index].user_id);
       return <p>Loading</p>;
@@ -109,10 +113,6 @@ class Users extends React.Component {
     let error_msg = null;
     if (this.state.errors) {
       error_msg = <Alert variant="danger">{this.state.errors}</Alert>
-    }
-
-    if (info.length === 0) {
-      return <Alert> Sorry, there is no recommend user for you now</Alert>
     }
 
     let photo_info = current_photos.length=== 0 ? "" :current_photos[photo_index].photo
