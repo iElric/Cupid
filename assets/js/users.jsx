@@ -1,11 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Card, Alert} from "react-bootstrap";
+import { Card, Alert } from "react-bootstrap";
 import { Redirect } from "react-router";
 import { FaSmile, FaSadTear, FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { IconButton } from "@material-ui/core";
-import { get_my_interests_photo_by_id, get_recommendation, like_user} from "./ajax";
-
+import {
+  get_my_interests_photo_by_id,
+  get_recommendation,
+  like_user
+} from "./ajax";
 
 class Users extends React.Component {
   constructor(props) {
@@ -33,52 +36,53 @@ class Users extends React.Component {
   nextPhoto() {
     let { current_photos, photo_index } = this.props;
     if (current_photos.length <= photo_index + 1) {
-      this.setState({errors: "This is the last photo of this user"})
+      this.setState({ errors: "This is the last photo of this user" });
     } else {
       photo_index = photo_index + 1;
       this.props.dispatch({
         type: "USERS",
         data: { photo_index: photo_index }
       });
-      this.setState({errors: null})
+      this.setState({ errors: null });
     }
   }
 
   previousPhoto() {
     let { photo_index } = this.props;
     if (photo_index === 0) {
-      this.setState({errors: "This is the first photo of this user"})
+      this.setState({ errors: "This is the first photo of this user" });
     } else {
       photo_index = photo_index - 1;
       this.props.dispatch({
         type: "USERS",
         data: { photo_index: photo_index }
       });
-      this.setState({errors: null})
+      this.setState({ errors: null });
     }
   }
 
   like() {
-    let {info, user_index} = this.props;
+    let { info, user_index } = this.props;
 
     // db operation
-    like_user(user_index);
+    console.log(info[user_index].user_id);
+    like_user(info[user_index].user_id);
     if (info.length <= user_index + 1) {
-      this.setState({errors: "This is the last recommended user"})
+      this.setState({ errors: "This is the last recommended user" });
     } else {
       user_index = user_index + 1;
       this.props.dispatch({
         type: "USERS",
         data: { current_photos: null, user_index: user_index }
       });
-      this.setState({errors: null})
+      this.setState({ errors: null });
     }
   }
 
   dislike() {
-    let {info, user_index} = this.props;
+    let { info, user_index } = this.props;
     if (info.length <= user_index + 1) {
-      this.setState({errors: "This is the last recommended user"})
+      this.setState({ errors: "This is the last recommended user" });
       //alert("last recommend user");
     } else {
       user_index = user_index + 1;
@@ -86,7 +90,7 @@ class Users extends React.Component {
         type: "USERS",
         data: { current_photos: null, photo_index: 0, user_index: user_index }
       });
-      this.setState({errors: null})
+      this.setState({ errors: null });
     }
   }
 
@@ -102,7 +106,12 @@ class Users extends React.Component {
     }
 
     if (info.length === 0) {
-      return <Alert> Sorry, there is no recommend user for you now</Alert>
+      return (
+        <Alert variant="danger">
+          {" "}
+          Sorry, there is no recommend user for you now
+        </Alert>
+      );
     }
 
     if (current_photos == null) {
@@ -112,11 +121,13 @@ class Users extends React.Component {
 
     let error_msg = null;
     if (this.state.errors) {
-      error_msg = <Alert variant="danger">{this.state.errors}</Alert>
+      error_msg = <Alert variant="danger">{this.state.errors}</Alert>;
     }
 
-    let photo_info = current_photos.length=== 0 ? "" :current_photos[photo_index].photo
-    let photo_desc = current_photos.length=== 0 ? "" :current_photos[photo_index].desc
+    let photo_info =
+      current_photos.length === 0 ? "" : current_photos[photo_index].photo;
+    let photo_desc =
+      current_photos.length === 0 ? "" : current_photos[photo_index].desc;
     return (
       <div>
         {error_msg}
@@ -128,29 +139,37 @@ class Users extends React.Component {
           </div>
           <div className="col-6">
             <div className="row">
-              <div className="col-12 p-0" >
-              <Card>
-                <Card.Header id="user_name">{info[user_index].user_name}</Card.Header>
-                <Card.Subtitle>{info[user_index].user_desc}</Card.Subtitle>
-                <Card.Img id="image" src={photo_info} width='100px' alt="This User doesn't have any photos"/>
-                <Card.Body id="user_text">
-                  <Card.Text>{photo_desc}</Card.Text>
-                </Card.Body>
-              </Card>
+              <div className="col-12 p-0">
+                <Card>
+                  <Card.Header id="user_name">
+                    Name: {info[user_index].user_name}
+                    <br />
+                    Desc: {info[user_index].user_desc}
+                  </Card.Header>
+                  <Card.Img
+                    id="image"
+                    src={photo_info}
+                    width="100px"
+                    alt="This User doesn't have any photos"
+                  />
+                  <Card.Body id="user_text">
+                    <Card.Text>{photo_desc}</Card.Text>
+                  </Card.Body>
+                </Card>
               </div>
             </div>
             <div className="row" id="face_icons">
               <div className="col-6">
-              <IconButton onClick={() => this.dislike()}>
-                <FaSadTear id="cry"size="3em" color="light-blue" />
-                Pass
-              </IconButton>
+                <IconButton onClick={() => this.dislike()}>
+                  <FaSadTear id="cry" size="3em" color="light-blue" />
+                  Pass
+                </IconButton>
               </div>
-              <div className="col-6" >
-              <IconButton onClick={() => this.like()}>
-                <FaSmile id="smile" size="3em" />
-                Like
-              </IconButton>
+              <div className="col-6">
+                <IconButton onClick={() => this.like()}>
+                  <FaSmile id="smile" size="3em" />
+                  Like
+                </IconButton>
               </div>
             </div>
           </div>

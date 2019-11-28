@@ -18,7 +18,7 @@ import AddTag from './add_tag'
 import Users from "./users"
 import ChangeDesc from "./change_desc"
 import store from "./store";
-import { FaHeartbeat } from "react-icons/fa";
+import { FaHeartbeat, FaHome } from "react-icons/fa";
 export default function init_page(root) {
   let tree = (
     <Provider store={store}>
@@ -36,7 +36,7 @@ function Page(props) {
             <Nav>
               <Nav.Item>
                 <NavLink to="/" exact activeClassName="active" className="nav-link">
-                  <FaHeartbeat /> Home
+                  <FaHome /> Home
                 </NavLink>
               </Nav.Item>
                 <Nav.Item>
@@ -56,7 +56,7 @@ function Page(props) {
                   activeClassName="active"
                   className="nav-link"
                 >
-                  Users
+                  <FaHeartbeat />Users
                 </NavLink>
               </Nav.Item>
               <Nav.Item>
@@ -146,7 +146,7 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
     return (
         <Nav>
           <Nav.Item>
-            <p className="text-light py-2">User: {session.user_name}</p>
+            <p className="nav-link py-2">{session.user_name}</p>
           </Nav.Item>
           <Nav.Item>
             <a className="nav-link" href="#" onClick={logout}>Logout</a>
