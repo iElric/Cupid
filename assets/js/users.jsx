@@ -1,13 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { Card, Alert} from "react-bootstrap";
 import { Redirect } from "react-router";
 import { FaSmile, FaSadTear, FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { IconButton } from "@material-ui/core";
-import { get_recommendation } from "./ajax";
-import { get_my_interests_photo_by_id} from "./ajax";
-//import { submit_login } from './ajax';
+import { get_my_interests_photo_by_id, get_recommendation, like_user} from "./ajax";
+
 
 class Users extends React.Component {
   constructor(props) {
@@ -47,7 +45,7 @@ class Users extends React.Component {
   }
 
   previousPhoto() {
-    let { current_photos, photo_index } = this.props;
+    let { photo_index } = this.props;
     if (photo_index === 0) {
       this.setState({errors: "This is the first photo of this user"})
     } else {
@@ -64,8 +62,9 @@ class Users extends React.Component {
     let {info, user_index} = this.props;
 
     // db operation
+    like_user(user_index);
     if (info.length <= user_index + 1) {
-      this.setState({errors: "This is the last recommend user"})
+      this.setState({errors: "This is the last recommended user"})
     } else {
       user_index = user_index + 1;
       this.props.dispatch({
@@ -79,7 +78,7 @@ class Users extends React.Component {
   dislike() {
     let {info, user_index} = this.props;
     if (info.length <= user_index + 1) {
-      this.setState({errors: "This is the last recommend user"})
+      this.setState({errors: "This is the last recommended user"})
       //alert("last recommend user");
     } else {
       user_index = user_index + 1;

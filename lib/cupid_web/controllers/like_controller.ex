@@ -11,7 +11,11 @@ defmodule CupidWeb.LikeController do
     render(conn, "index.json", likes: likes)
   end
 
-  def create(conn, %{"like" => like_params}) do
+  def create(conn, %{"like_to_id" => like_to_id}) do
+    like_params = %{
+      like_from_id: conn.assigns[:current_user].id,
+      like_to_id: like_to_id
+    }
     with {:ok, %Like{} = like} <- Likes.create_like(like_params) do
       conn
       |> put_status(:created)
