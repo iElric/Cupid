@@ -16,6 +16,7 @@ import UploadNewPhoto from "./upload"
 import Matches from './matches'
 import AddTag from './add_tag'
 import store from "./store";
+import Discovers from './discovers'
 
 export default function init_page(root) {
   let tree = (
@@ -67,6 +68,16 @@ function Page(props) {
                   Friends
                 </NavLink>
               </Nav.Item>
+                <Nav.Item>
+                    <NavLink
+                        to="/discovers"
+                        exact
+                        activeClassName="active"
+                        className="nav-link"
+                    >
+                        Discover
+                    </NavLink>
+                </Nav.Item>
             </Nav>
         </Col>
           <Col md = "2">
@@ -108,6 +119,9 @@ function Page(props) {
         <Route exact path="/matches">
           <Matches />
         </Route>
+          <Route exact path="/discovers">
+              <Discovers />
+          </Route>
 
         <Route exact path="/add_tags">
           <AddTag />
