@@ -17,11 +17,11 @@ defmodule CupidWeb.LikeController do
   def create(conn, %{"like_to_id" => like_to_id}) do
     like_from_id = conn.assigns[:current_user].id
     # check if the reverse realtion exist
-    reverse_realtion_id = Likes.get_like(like_to_id, like_from_id)
-
-    if reverse_realtion_id do
+    reverse_realtion = Likes.get_like(like_to_id, like_from_id)
+    IO.inspect reverse_realtion
+    if reverse_realtion do
       # remove the reverse like realtion
-      Likes.delete_like(%Like{id: reverse_realtion_id})
+      Likes.delete_like(reverse_realtion)
       # add to match
       Matches.create_match(%{user1_id: like_to_id, user2_id: like_from_id})
       send_resp(conn, :no_content, "")
