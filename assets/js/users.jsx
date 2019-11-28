@@ -109,7 +109,7 @@ class Users extends React.Component {
       return (
         <Alert variant="danger">
           {" "}
-          Sorry, there is no recommend user for you now
+          Sorry, there is no recommended user for you now
         </Alert>
       );
     }
@@ -150,7 +150,7 @@ class Users extends React.Component {
                     id="image"
                     src={photo_info}
                     width="100px"
-                    alt="This User doesn't have any photos"
+                    alt="This user doesn't have any photos"
                   />
                   <Card.Body id="user_text">
                     <Card.Text>{photo_desc}</Card.Text>
