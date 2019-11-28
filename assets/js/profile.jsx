@@ -5,8 +5,8 @@ import { Button, Alert, ListGroup } from "react-bootstrap";
 import { Redirect } from "react-router";
 import { get_profile } from "./ajax";
 import { get_my_interests } from "./ajax";
-import { FaHeart} from "react-icons/fa";
-import {IoIosMail} from "react-icons/io"
+import { FaHeart, FaRegAddressCard } from "react-icons/fa";
+import { IoIosMail, IoIosPerson } from "react-icons/io";
 import { IconButton } from "@material-ui/core";
 //import { submit_login } from './ajax';
 
@@ -69,7 +69,7 @@ class Profile extends React.Component {
     if (errors) {
       error_msg = <Alert variant="danger">{errors}</Alert>;
     }
-    
+
     let interest_name = my_interests.map(x => (
       <ListGroup as="ul" key={x.id}>
         <ListGroup.Item as="li" variant="primary">
@@ -81,55 +81,60 @@ class Profile extends React.Component {
     return (
       <div className="profile">
         <h1>Profile</h1>
-        <IconButton onClick={() => this.setState({ redirect: "./upload_new_photo" })}>
-              <FaHeart className="layer" size="1em" color="pink" />
-              Upload New Photo
+        <IconButton
+          onClick={() => this.setState({ redirect: "./upload_new_photo" })}
+        >
+          <FaHeart className="layer" size="1em" color="pink" />
+          Upload New Photo
         </IconButton>
 
-        <IoIosMail />
-
         <IconButton onClick={() => this.setState({ redirect: "./all_photos" })}>
-              <FaHeart className="layer" size="1em" color="pink" />
-              Show All My Photos
+          <FaHeart className="layer" size="1em" color="pink" />
+          Show All My Photos
         </IconButton>
         {error_msg}
 
         <div className="col-md profile-item">
-          <span>Email</span>
+          <span>
+            <IoIosMail color="dodgerblue" />
+            Email
+          </span>
           <hr />
-          <Alert variant="success">
-            {email}
-          </Alert>
+          <Alert variant="success">{email}</Alert>
         </div>
 
         <div className="col-md profile-item">
-          <span>Name</span>
+          <span>
+            <IoIosPerson color="dodgerblue" />
+            Name
+          </span>
           <hr />
-          <Alert variant="warning">
-            {name}
-          </Alert>
+          <Alert variant="warning">{name}</Alert>
         </div>
-        
 
         <div className="col-md profile-item">
-          <span>Description</span>
+          <span>
+            <FaRegAddressCard color="dodgerblue" />
+            Description
+          </span>
           <Button
             className="align-right-button"
             onClick={() => this.setState({ redirect: "./change_desc" })}
           >
-            Modify Description
+            Modify
           </Button>
           <hr />
-          <Alert
-            variant="info"
-          >
-            {desc}
-          </Alert>
+          <Alert variant="info">{desc}</Alert>
         </div>
 
         <div className="col-md profile-item">
           <span>My Interests</span>
-          <Button className="align-right-button">Add Interests</Button>
+          <Button
+            className="align-right-button"
+            onClick={() => this.setState({ redirect: "./add_tags" })}
+          >
+            Add
+          </Button>
           <hr />
         </div>
         <div className="col-md">

@@ -112,6 +112,14 @@
     resize: both;
 }
 
+#fileUpload {
+    display: none;
+}
+
+.file_upload_width {
+    width: 300px;
+}
+
 //profile
 .form-short-input {
     font-size: 1.2rem;
@@ -133,7 +141,7 @@
 }
 
 .profile-card-title {
-    background-color: DodgerBlue;
+    background-color: nav-user-name;
 }
 
 hr {
@@ -154,7 +162,7 @@ hr {
 }
 
 .profile-item {
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 }
 
 //login
