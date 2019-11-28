@@ -12,8 +12,19 @@ class Discovers extends React.Component
     constructor(props) {
         super(props);
         this.state = {
-            selected: null
+            latitude: null,
+            longitude: null,
         };
+    }
+
+    changed(latitude, longitude) {
+        this.props.dispatch({
+            type: "UpdateLocation",
+            data: {
+                latitude: latitude,
+                longitude: longitude,
+            }
+        });
     }
 
     showPosition() {
@@ -22,6 +33,8 @@ class Discovers extends React.Component
                 let positionInfo = "Your current position is (" + "Latitude: " + position.coords.latitude + ", "
                     + "Longitude: " + position.coords.longitude + ")";
                 document.getElementById("result").innerHTML = positionInfo;
+
+                this.changed(position.coords.latitude, position.coords.longitude)
             });
         } else {
             alert("Sorry, your browser does not support HTML5 geolocation.");
@@ -37,7 +50,6 @@ class Discovers extends React.Component
                         <h1>Discover People Nearby </h1>
                     </div>
                 </div>
-                <p> My Location: </p>
                 <div id="result">
                 </div>
                 <button type="button" onClick={this.showPosition}>Show Position</button>
