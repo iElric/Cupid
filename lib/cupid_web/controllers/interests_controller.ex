@@ -59,8 +59,12 @@ defmodule CupidWeb.InterestsController do
     current_user_id = conn.assigns[:current_user].id
     users_same_interests = Interest.get_match_user_id(current_user_id)
     users_liked = Likes.get_likes_by_like_from_id(current_user_id) |> Enum.map(fn like -> like.like_from_id end)
-    user_matched = Matches.list_user_matches(current_user_id)
-    recommended_users = users_same_interests -- users_liked -- user_matched |> Enum.map(fn x -> Users.get_user!(x)end)
+    users_matched = Matches.list_user_matches(current_user_id)
+    IO.inspect users_same_interests
+    IO.inspect users_liked
+    IO.inspect users_matched
+    # use parentheses to ensure the right order
+    recommended_users = (users_same_interests -- users_liked) -- users_matched |> Enum.map(fn x -> Users.get_user!(x)end)
     render(conn, "browse.json", match_user: recommended_users)
   end
 
