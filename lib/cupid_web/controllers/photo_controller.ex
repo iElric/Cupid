@@ -3,7 +3,6 @@ defmodule CupidWeb.PhotoController do
 
   alias Cupid.Photos
   alias Cupid.Photos.Photo
-  alias Cupid.Interest
 
   action_fallback CupidWeb.FallbackController
 
