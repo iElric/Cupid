@@ -78,7 +78,7 @@
 }
 
 #user_name {
-    background-color: dimgray;
+    background-color: DodgerBlue;
     font-family: serif;
     color: white;
     text-align: center;
@@ -111,3 +111,46 @@
     object-fit: contain;
     resize: both;
 }
+
+//profile
+.form-short-input {
+    font-size: 1.2rem;
+    border-radius: 10rem;
+    width: 300px;
+}
+
+.form-short-input-label {
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.profile-card {
+    width: 40%;
+    border-color: DodgerBlue;
+    border-width: 2px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.profile-card-title {
+    background-color: DodgerBlue;
+}
+
+hr {
+    border: solid 1px dodgerblue;
+}
+
+.align-right-button {
+    float: right
+}
+
+.border_button {
+    border-radius: 5rem;
+    font-size: 1.2rem;
+}
+
+.profile {
+    margin-bottom: 20px;
+}
+
+//login

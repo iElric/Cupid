@@ -16,8 +16,9 @@ import UploadNewPhoto from "./upload"
 import Matches from './matches'
 import AddTag from './add_tag'
 import Users from "./users"
+import ChangeDesc from "./change_desc"
 import store from "./store";
-
+import { FaHeartbeat } from "react-icons/fa";
 export default function init_page(root) {
   let tree = (
     <Provider store={store}>
@@ -30,12 +31,12 @@ export default function init_page(root) {
 function Page(props) {
   return (
     <Router>
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg="light" variant="primary">
         <Col md = "10">
             <Nav>
               <Nav.Item>
                 <NavLink to="/" exact activeClassName="active" className="nav-link">
-                  Home
+                  <FaHeartbeat /> Home
                 </NavLink>
               </Nav.Item>
                 <Nav.Item>
@@ -116,6 +117,10 @@ function Page(props) {
 
         <Route exact path="/users">
           <Users />
+        </Route>
+
+        <Route exact path="/change_desc">
+          <ChangeDesc />
         </Route>
 
       </Switch>

@@ -91,10 +91,6 @@ class Users extends React.Component {
     }
   }
 
-  clickIcon() {
-    alert("click icon");
-  }
-
   render() {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
@@ -107,13 +103,17 @@ class Users extends React.Component {
     }
 
     if (current_photos == null) {
-      get_my_interests_photo_by_id(info[user_index]);
+      get_my_interests_photo_by_id(info[user_index].user_id);
       return <p>Loading</p>;
     }
 
     let error_msg = null;
     if (this.state.errors) {
       error_msg = <Alert variant="danger">{this.state.errors}</Alert>
+    }
+
+    if (info.length === 0) {
+      return <Alert> Sorry, there is no recommend user for you now</Alert>
     }
 
     let photo_info = current_photos.length=== 0 ? "" :current_photos[photo_index].photo
@@ -131,8 +131,8 @@ class Users extends React.Component {
             <div className="row">
               <div className="col-12 p-0" >
               <Card>
-                <Card.Header id="user_name">Name</Card.Header>
-                {/* <img src={photo_info} width={100 + 'px'}></img> */}
+                <Card.Header id="user_name">{info[user_index].user_name}</Card.Header>
+                <Card.Subtitle>{info[user_index].user_desc}</Card.Subtitle>
                 <Card.Img id="image" src={photo_info} width='100px' alt="This User doesn't have any photos"/>
                 <Card.Body id="user_text">
                   <Card.Text>{photo_desc}</Card.Text>

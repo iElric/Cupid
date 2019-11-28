@@ -82,10 +82,11 @@ export function get_profile() {
     });
 }
 
-export function change_profile_desc(form) {
+export function change_profile_desc() {
     let id = JSON.parse(localStorage.getItem("session")).user_id;
     let state = store.getState();
     let data = { user: state.profile.desc };
+    console.log(data)
     put("/users/" + id, data).then(resp => {
         console.log(resp);
         Object.assign(resp.data, { hint: "success" });

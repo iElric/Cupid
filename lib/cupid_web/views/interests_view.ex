@@ -20,7 +20,11 @@ defmodule CupidWeb.InterestsView do
     %{data: "success"}
   end
 
-  def render("browse.json", %{match_user_id: match_user_id}) do
-    %{data: match_user_id}
+  def render("browse.json", %{match_user: match_user}) do
+    %{data: render_many(match_user, InterestsView, "browse_result.json")}
+  end
+
+  def render("browse_result.json", %{interests: match_user}) do
+    %{user_id: match_user.id, user_name: match_user.name, user_desc: match_user.desc}
   end
 end
