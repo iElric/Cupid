@@ -4,6 +4,8 @@ defmodule CupidWeb.InterestsController do
   alias Cupid.Interest
   alias Cupid.Interest.Interests
   alias Cupid.Users
+  alias Cupid.Likes
+  alias Cupid.Matches
 
   action_fallback CupidWeb.FallbackController
   plug CupidWeb.Plugs.RequireAuth when action in [:index, :create, :update, :delete, :browse]
@@ -48,10 +50,18 @@ defmodule CupidWeb.InterestsController do
     end
   end
 
+  @doc """
+  Assemble recommended list here.
+  recommended_users = users_same_interests ++ users_near_by -- users_liked -- users_matched
+  """
   def browse(conn, _params) do
-    match_user_id = Interest.get_match_user_id(conn.assigns[:current_user].id)
-    match_user = Enum.map(match_user_id, fn x -> Users.get_user!(x)end)
-    render(conn, "browse.json", match_user: match_user)
+    # get the users who have two or more interests with current user
+    current_user_id = conn.assigns[:current_user].id
+    users_same_interests = Interest.get_match_user_id(current_user_id)
+    users_liked = Likes.get_likes_by_like_from_id(current_user_id) |> Enum.map(fn like -> like.like_from_id end)
+    user_matched = Matches.list_user_matches(current_user_id)
+    recommended_users = users_same_interests -- users_liked -- user_matched |> Enum.map(fn x -> Users.get_user!(x)end)
+    render(conn, "browse.json", match_user: recommended_users)
   end
 
 end

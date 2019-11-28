@@ -22,8 +22,8 @@ Repo.insert!(%User{name: "Bob", email: "bob@cupid.com", gender: "Male", password
 Repo.insert!(%User{name: "Tom", email: "tom@cupid.com", gender: "Male", password_hash: pw})
 Repo.insert!(%User{name: "Jerry", email: "jerry@cupid.com", gender: "Male", password_hash: pw})
 
-Repo.insert!(%Match{user1_id: 1, user2_id: 2})
-Repo.insert!(%Match{user1_id: 3, user2_id: 1})
+#Repo.insert!(%Match{user1_id: 1, user2_id: 2})
+#Repo.insert!(%Match{user1_id: 3, user2_id: 1})
 
 Repo.insert!(%Tag{name: "Sports"})
 Repo.insert!(%Tag{name: "Movies"})
