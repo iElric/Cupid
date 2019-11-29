@@ -118,5 +118,10 @@ defmodule Cupid.Users do
     |> Repo.update()
   end
 
+  def update_user_lan_lon_by_id(id, lan, lon) do
+    Repo.get_by(User, id: id)
+    |> Ecto.Changeset.change(%{lan: lan, lon: lon})
+    |> Repo.update()
+  end
 
 end

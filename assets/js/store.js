@@ -102,6 +102,15 @@ function session(st0 = session0, action) {
     }
 }
 
+function geolocation(st0 = {latitude: 0, longitude: 0}, action) {
+    switch (action.type) {
+        case "Update_Location":
+            return Object.assign({}, st0, action.data);
+        default:
+            return st0;
+    }
+}
+
 
 function root_reducer(st0, action) {
     console.log("root reducer", st0, action);
@@ -114,6 +123,7 @@ function root_reducer(st0, action) {
         all_photos,
         matches,
         add_tags,
+        geolocation,
     });
     return deepFreeze(reducer(st0, action));
 }

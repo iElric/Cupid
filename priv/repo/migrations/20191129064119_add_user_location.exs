@@ -3,8 +3,8 @@ defmodule Cupid.Repo.Migrations.AddUserLocation do
 
   def change do
     alter table("users") do
-      add :lan, :string, default: "", null: false
-      add :lon, :string, default: "", null: false
+      add :lan, :decimal, default: 0, null: false
+      add :lon, :decimal, default: 0, null: false
     end
   end
 end

@@ -32,6 +32,21 @@ defmodule CupidWeb.UserController do
     end
   end
 
+  def update(conn, %{"id" => id, "latitude" => lan, "longitude" => lon}) do
+    IO.inspect("start testing update");
+    IO.inspect(lan);
+    IO.inspect(lon);
+    IO.inspect("end testing update");
+    if is_float(lan) do
+      IO.inspect("hhh")
+    end
+
+    with {:ok, %User{} = user} <- Users.update_user_lan_lon_by_id(id, lan, lon) do
+      IO.inspect("updated the lan and lon");
+      render(conn, "show.json", user: user)
+    end
+  end
+
   def delete(conn, %{"id" => id}) do
     user = Users.get_user!(id)
 
