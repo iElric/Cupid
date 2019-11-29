@@ -18,7 +18,8 @@ import AddTag from './add_tag'
 import Users from "./users"
 import ChangeDesc from "./change_desc"
 import store from "./store";
-import { FaHeartbeat, FaHome } from "react-icons/fa";
+import { FaHeartbeat, FaHome , FaRegUser, FaRegComment} from "react-icons/fa";
+
 export default function init_page(root) {
   let tree = (
     <Provider store={store}>
@@ -46,7 +47,7 @@ function Page(props) {
                         activeClassName="active"
                         className="nav-link"
                     >
-                        Profile
+                        < FaRegUser/>Profile
                     </NavLink>
                 </Nav.Item>
               <Nav.Item>
@@ -66,7 +67,7 @@ function Page(props) {
                   activeClassName="active"
                   className="nav-link"
                 >
-                  Friends
+                  <FaRegComment/>Friends
                 </NavLink>
               </Nav.Item>
             </Nav>

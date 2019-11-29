@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
-import { Button, Alert, ListGroup } from "react-bootstrap";
+import { Button, Alert, ListGroup, Form} from "react-bootstrap";
 import { Redirect } from "react-router";
 import { get_profile } from "./ajax";
 import { get_my_interests } from "./ajax";
 import { FaHeart, FaRegAddressCard } from "react-icons/fa";
-import { IoIosMail, IoIosPerson } from "react-icons/io";
+import { IoIosMail, IoIosPerson, IoMdPhotos,  IoIosPhotos, IoMdHeartEmpty} from "react-icons/io";
 import { IconButton } from "@material-ui/core";
 //import { submit_login } from './ajax';
 
@@ -17,6 +17,13 @@ class Profile extends React.Component {
     this.state = {
       redirect: null
     };
+  }
+
+  componentDidMount() {
+    this.props.dispatch({
+      type: "SHOW_PROFILE",
+      data: {email: null, name: null, desc: null, my_interests: null, hint: null, errors: null}
+    });
   }
 
   redirect(path) {
@@ -84,13 +91,12 @@ class Profile extends React.Component {
         <IconButton
           onClick={() => this.setState({ redirect: "./upload_new_photo" })}
         >
-          <FaHeart className="layer" size="1em" color="pink" />
-          Upload New Photo
+          < IoIosPhotos className="layer" size="1em" color="pink" />
+          Upload
         </IconButton>
 
         <IconButton onClick={() => this.setState({ redirect: "./all_photos" })}>
-          <FaHeart className="layer" size="1em" color="pink" />
-          Show All My Photos
+          <IoMdPhotos size="1em" color="pink"/>Photos
         </IconButton>
         {error_msg}
 
@@ -124,11 +130,11 @@ class Profile extends React.Component {
             Modify
           </Button>
           <hr />
-          <Alert variant="info">{desc}</Alert>
+          <Alert variant="info" className="overflow-auto">{desc}</Alert>
         </div>
 
         <div className="col-md profile-item">
-          <span>My Interests</span>
+          <span><IoMdHeartEmpty color="dodgerblue" />My Interests</span>
           <Button
             className="align-right-button"
             onClick={() => this.setState({ redirect: "./add_tags" })}

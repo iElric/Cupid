@@ -20,6 +20,13 @@ class Users extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.dispatch({
+        type: "USERS",
+        data: {info: null, current_photos: null, user_index: 0, photo_index: 0}
+      });
+}
+
   redirect(path) {
     this.setState({
       redirect: path

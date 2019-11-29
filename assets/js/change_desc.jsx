@@ -47,13 +47,13 @@ class ChangeDesc extends React.Component {
     } = this.props;
 
     if (desc == null) {
-        get_profile();
-        return (
-          <div>
-            <p>Loading</p>
-          </div>
-        );
-      }
+      get_profile();
+      return (
+        <div>
+          <p>Loading</p>
+        </div>
+      );
+    }
 
     let hint_msg = null;
     if (hint) {
@@ -64,20 +64,25 @@ class ChangeDesc extends React.Component {
       <div>
         <h1>Change Description</h1>
         {hint_msg}
-        <Form.Group controlId="desc">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            value={desc}
-            onChange={ev => this.changed({ desc: ev.target.value })}
-          />
-        </Form.Group>
 
-        <Form.Group controlId="submit">
-          <Button variant="primary" onClick={() => change_profile_desc()}>
-            Submit
-          </Button>
-        </Form.Group>
+        <div className="row justify-content-center">
+          <Form.Group controlId="desc">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              value={desc}
+              onChange={ev => this.changed({ desc: ev.target.value })}
+              className=" photo-desc "
+            />
+          </Form.Group>
+        </div>
+        <div className="row justify-content-center">
+          <Form.Group controlId="submit">
+            <Button variant="primary" onClick={() => change_profile_desc()}>
+              Submit
+            </Button>
+          </Form.Group>
+        </div>
       </div>
     );
   }

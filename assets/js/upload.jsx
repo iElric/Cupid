@@ -67,10 +67,10 @@ class UploadNewPhoto extends React.Component {
         <div className="row justify-content-center" >
         <Form.Group controlId="photo_desc">
           <Form.Control
-            type="text"
+            as="textarea"
             onChange={ev => this.changed({ photo_desc: ev.target.value })}
             placeholder="Photo Description"
-            className="form-short-input"
+            className="photo-desc"
           />
         </Form.Group>
         </div>

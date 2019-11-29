@@ -12,6 +12,13 @@ class AllPhotos extends React.Component {
         super(props);
     }
 
+    componentDidMount() {
+        this.props.dispatch({
+            type: "ALL_PHOTOS",
+            data: {photos: null, errors: null}
+          });
+    }
+
     render() {
 
         let {photos, errors } = this.props;

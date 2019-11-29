@@ -106,6 +106,7 @@ function session(st0 = session0, action) {
         case 'LOG_IN':
             return action.data;
         case 'LOG_OUT':
+            console.log("log out")
             return null;
         default:
             return st0;
@@ -115,6 +116,7 @@ function session(st0 = session0, action) {
 
 function root_reducer(st0, action) {
     console.log("root reducer", st0, action);
+
     let reducer = combineReducers({
         forms,
         session,
