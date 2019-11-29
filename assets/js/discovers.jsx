@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {change_location} from "./ajax";
+import {change_location, load_ppl_nearby} from "./ajax";
 
 
 class Discovers extends React.Component
@@ -27,6 +27,8 @@ class Discovers extends React.Component
     }
 
     render() {
+        let names = load_ppl_nearby(this.state.latitude, this.state.longitude)
+
         return (
             <div>
                 <div className="row">
@@ -37,6 +39,11 @@ class Discovers extends React.Component
                 <div id="result">
                 </div>
                 <button type="button" onClick={this.showPosition(change_location)}>Show Position</button>
+
+                <div className="row">
+                    <h1>Nearby PPL</h1>
+                        {names}
+                </div>
             </div>
         );
     }

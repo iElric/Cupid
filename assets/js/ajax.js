@@ -166,6 +166,19 @@ export function show_all_matches() {
     });
 }
 
+export function load_ppl_nearby(lan, lon) {
+    let id = JSON.parse(localStorage.getItem("session")).user_id;
+    get("/users").then(resp => {
+        console.log(resp);
+        store.dispatch({
+            type: "MATCHES",
+            data: {
+                matches: resp.data
+            }
+        });
+    });
+}
+
 export function get_tags() {
     get("/tags").then(resp => {
         console.log(resp);
