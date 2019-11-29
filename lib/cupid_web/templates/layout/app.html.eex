@@ -13,14 +13,9 @@
         </script>
   </head>
   <body>
-    <header>
-      <section class="container">
-        
-      </section>
-    </header>
-    <main role="main" class="container">
+    <div class="container">
       <%= render @view_module, @view_template, assigns %>
-    </main>
+    </div>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

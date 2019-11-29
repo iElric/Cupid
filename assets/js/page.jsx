@@ -16,6 +16,7 @@ import UploadNewPhoto from "./upload"
 import Matches from './matches'
 import AddTag from './add_tag'
 import Users from "./users"
+import Index from "./index"
 import ChangeDesc from "./change_desc"
 import store from "./store";
 import { FaHeartbeat, FaHome , FaRegUser, FaRegComment} from "react-icons/fa";
@@ -35,12 +36,12 @@ function Page(props) {
       <Navbar bg="light" variant="primary">
         <Col md = "10">
             <Nav>
-              <Nav.Item>
+              <Nav.Item className="col-2">
                 <NavLink to="/" exact activeClassName="active" className="nav-link">
                   <FaHome /> Home
                 </NavLink>
               </Nav.Item>
-                <Nav.Item>
+                <Nav.Item className="col-2">
                     <NavLink
                         to="/profile"
                         exact
@@ -50,7 +51,7 @@ function Page(props) {
                         < FaRegUser/>Profile
                     </NavLink>
                 </Nav.Item>
-              <Nav.Item>
+              <Nav.Item className="col-2">
                 <NavLink
                   to="/users"
                   exact
@@ -60,7 +61,7 @@ function Page(props) {
                   <FaHeartbeat />Users
                 </NavLink>
               </Nav.Item>
-              <Nav.Item>
+              <Nav.Item className="col-2">
                 <NavLink
                   to="/matches"
                   exact
@@ -72,14 +73,14 @@ function Page(props) {
               </Nav.Item>
             </Nav>
         </Col>
-          <Col md = "2">
-              <Session />
-          </Col>
+        <Col md = "2">
+            <Session />
+        </Col>
       </Navbar>
 
       <Switch>
           <Route exact path="/">
-              <h1>This is the index page of Cupid</h1>
+              <Index />
           </Route>
         <Route exact path="/login">
           <Login />
