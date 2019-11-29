@@ -22,10 +22,10 @@ class Users extends React.Component {
 
   componentDidMount() {
     this.props.dispatch({
-        type: "USERS",
-        data: {info: null, current_photos: null, user_index: 0, photo_index: 0}
-      });
-}
+      type: "USERS",
+      data: { info: null, current_photos: null, user_index: 0, photo_index: 0 }
+    });
+  }
 
   redirect(path) {
     this.setState({
@@ -173,7 +173,7 @@ class Users extends React.Component {
                 </IconButton>
               </div>
               <div className="col-6">
-                <IconButton onClick={() => this.like()}>
+                <IconButton className= "align-right-button" onClick={() => this.like()}>
                   <FaSmile id="smile" size="3em" />
                   Like
                 </IconButton>
