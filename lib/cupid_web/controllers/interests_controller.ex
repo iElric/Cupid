@@ -62,7 +62,7 @@ defmodule CupidWeb.InterestsController do
     users_same_interests = Interest.get_match_user_id(current_user_id)
     # filter the users with the same gender as current user
     users_same_interests = users_same_interests |> Enum.filter(fn id -> Users.get_user!(id).gender !== current_user_gender end)
-    users_liked = Likes.get_likes_by_like_from_id(current_user_id) |> Enum.map(fn like -> like.like_from_id end)
+    users_liked = Likes.get_likes_by_like_from_id(current_user_id) |> Enum.map(fn like -> like.like_to_id end)
     users_matched = Matches.list_user_matches(current_user_id)
     IO.inspect users_same_interests
     IO.inspect users_liked
