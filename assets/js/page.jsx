@@ -19,8 +19,7 @@ import Users from "./users"
 import Index from "./index"
 import ChangeDesc from "./change_desc"
 import store from "./store";
-import Discovers from './discovers'
-import { FaHeartbeat, FaHome , FaRegUser, FaRegComment} from "react-icons/fa";
+import { FaHeartbeat, FaHome, FaRegUser, FaRegComment } from "react-icons/fa";
 
 export default function init_page(root) {
   let tree = (
@@ -35,54 +34,54 @@ function Page(props) {
   return (
     <Router>
       <Navbar bg="light" variant="primary">
-        <Col md = "10">
-            <Nav>
-              <Nav.Item className="col-2">
-                <NavLink to="/" exact activeClassName="active" className="nav-link">
-                  <FaHome /> Home
+        <Col md="10">
+          <Nav>
+            <Nav.Item className="col-2">
+              <NavLink to="/" exact activeClassName="active" className="nav-link">
+                <FaHome /> Home
                 </NavLink>
-              </Nav.Item>
-                <Nav.Item className="col-2">
-                    <NavLink
-                        to="/profile"
-                        exact
-                        activeClassName="active"
-                        className="nav-link"
-                    >
-                        < FaRegUser/>Profile
+            </Nav.Item>
+            <Nav.Item className="col-2">
+              <NavLink
+                to="/profile"
+                exact
+                activeClassName="active"
+                className="nav-link"
+              >
+                < FaRegUser />Profile
                     </NavLink>
-                </Nav.Item>
-              <Nav.Item className="col-2">
-                <NavLink
-                  to="/users"
-                  exact
-                  activeClassName="active"
-                  className="nav-link"
-                >
-                  <FaHeartbeat />Discover
+            </Nav.Item>
+            <Nav.Item className="col-2">
+              <NavLink
+                to="/users"
+                exact
+                activeClassName="active"
+                className="nav-link"
+              >
+                <FaHeartbeat />Discover
                 </NavLink>
-              </Nav.Item>
-              <Nav.Item className="col-2">
-                <NavLink
-                  to="/matches"
-                  exact
-                  activeClassName="active"
-                  className="nav-link"
-                >
-                  <FaRegComment/>Friends
+            </Nav.Item>
+            <Nav.Item className="col-2">
+              <NavLink
+                to="/matches"
+                exact
+                activeClassName="active"
+                className="nav-link"
+              >
+                <FaRegComment />Friends
                 </NavLink>
-              </Nav.Item>
-            </Nav>
+            </Nav.Item>
+          </Nav>
         </Col>
-        <Col md = "2">
-            <Session />
+        <Col md="2">
+          <Session />
         </Col>
       </Navbar>
 
       <Switch>
-          <Route exact path="/">
-              <Index />
-          </Route>
+        <Route exact path="/">
+          <Index />
+        </Route>
         <Route exact path="/login">
           <Login />
           <NavLink
@@ -91,7 +90,7 @@ function Page(props) {
             activeClassName="active"
             className="nav-link"
           >
-           Don't have an account? Sign Up Now!
+            Don't have an account? Sign Up Now!
           </NavLink>
         </Route>
 
@@ -113,10 +112,6 @@ function Page(props) {
         <Route exact path="/matches">
           <Matches />
         </Route>
-          <Route exact path="/discovers">
-              <Discovers />
-          </Route>
-
         <Route exact path="/add_tags">
           <AddTag />
         </Route>
@@ -139,7 +134,7 @@ function PrivateRoute() {
 }
 
 
-let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
+let Session = connect(({ session }) => ({ session }))(({ session, dispatch }) => {
   function logout(ev) {
     ev.preventDefault();
     localStorage.removeItem('session');
@@ -150,25 +145,25 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
 
   if (session) {
     return (
-        <Nav>
-          <Nav.Item>
-            <p className="nav-link py-2">{session.user_name}</p>
-          </Nav.Item>
-          <Nav.Item>
-            <a className="nav-link" href="#" onClick={logout}>Logout</a>
-          </Nav.Item>
-        </Nav>
+      <Nav>
+        <Nav.Item>
+          <p className="nav-link py-2">{session.user_name}</p>
+        </Nav.Item>
+        <Nav.Item>
+          <a className="nav-link" href="#" onClick={logout}>Logout</a>
+        </Nav.Item>
+      </Nav>
     );
   }
   else {
     return (
-        <Nav>
-          <Nav.Item>
-            <NavLink to="/login" exact activeClassName="active" className="nav-link">
-              Login
+      <Nav>
+        <Nav.Item>
+          <NavLink to="/login" exact activeClassName="active" className="nav-link">
+            Login
             </NavLink>
-          </Nav.Item>
-        </Nav>
+        </Nav.Item>
+      </Nav>
     );
   }
 });
