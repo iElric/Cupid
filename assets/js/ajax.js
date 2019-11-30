@@ -97,6 +97,21 @@ export function change_profile_desc() {
     });
 }
 
+export function change_location(lan, lon) {
+    console.log("change_location")
+    console.log(lan + "," + lon)
+    let id = JSON.parse(localStorage.getItem("session")).user_id;
+    let data = {latitude: lan, longitude: lon}
+    put("/users/" + id, data).then(resp => {
+        console.log(resp);
+        Object.assign(resp.data, {});
+        store.dispatch({
+            type: "Update_Location",
+            data: resp.data
+        });
+    });
+}
+
 export function upload_photo(form) {
     let state = store.getState();
     let data = state.upload_photo;
@@ -142,6 +157,19 @@ export function show_all_photos() {
 
 export function show_all_matches() {
     get("/matches").then(resp => {
+        console.log(resp);
+        store.dispatch({
+            type: "MATCHES",
+            data: {
+                matches: resp.data
+            }
+        });
+    });
+}
+
+export function load_ppl_nearby(lan, lon) {
+    let id = JSON.parse(localStorage.getItem("session")).user_id;
+    get("/users").then(resp => {
         console.log(resp);
         store.dispatch({
             type: "MATCHES",

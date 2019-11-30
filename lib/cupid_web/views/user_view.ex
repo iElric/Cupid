@@ -15,6 +15,9 @@ defmodule CupidWeb.UserView do
       email: user.email,
       name: user.name,
       gender: user.gender,
-      desc: user.desc}
+      desc: user.desc,
+      lan: user.lan,
+      lon: user.lon
+    }
   end
 end

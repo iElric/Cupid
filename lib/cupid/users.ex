@@ -118,5 +118,33 @@ defmodule Cupid.Users do
     |> Repo.update()
   end
 
+  def update_user_lan_lon_by_id(id, lan, lon, addr) do
+    pi = 3.14159265
+    lan = pi * lan / 180
+    lon = pi * lon / 180
+    Repo.get_by(User, id: id)
+    |> Ecto.Changeset.change(%{lan: lan, lon: lon, addr: addr})
+    |> Repo.update()
+  end
+
+  def get_user_by_radius(id) do
+    curr_user = Repo.get_by(User, id: id)
+    curr_lan = curr_user[:lan]
+    curr_lon = curr_user[:lon]
+
+    km_radius = 6373
+    list_users()
+    |> Enum.filter(fn x -> x[:lan] != 0 && x[:lon] != 0 end)
+    |> Enum.map(fn x ->
+      one_lan = x[:lan]
+      one_lon = x[:lon]
+      sin_lan = Math.sin(curr_lan) * Math.sin(one_lan)
+      cos_val = Math.cos(curr_lan) * Math.cos(one_lan)
+      cos_val = cos_val * Math.cos(curr_lon - one_lon)
+      dist = Math.acos(sin_lan + cos_val) * km_radius
+      Math.put(x, :distance, dist)
+    end)
+    |> Enum.filter(fn x -> x[:distance] < 5 end) # return all the ppl within 5km distance
+  end
 
 end
