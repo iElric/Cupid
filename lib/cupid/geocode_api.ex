@@ -38,7 +38,6 @@ defmodule Cupid.GeocodeApi do
 
   def api_key do
     # key here. please ask admin for this
-    "AIzaSyCYxCa8DQ_gtAyqTmO9nqkqwkDZvAp1TA0"
   end
 
   def transform_param(params) do
