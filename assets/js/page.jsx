@@ -72,16 +72,6 @@ function Page(props) {
                   <FaRegComment/>Friends
                 </NavLink>
               </Nav.Item>
-                <Nav.Item>
-                    <NavLink
-                        to="/discovers"
-                        exact
-                        activeClassName="active"
-                        className="nav-link"
-                    >
-                        Discover
-                    </NavLink>
-                </Nav.Item>
             </Nav>
         </Col>
         <Col md = "2">
