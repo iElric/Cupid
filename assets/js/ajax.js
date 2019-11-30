@@ -86,7 +86,7 @@ export function change_profile_desc() {
     let id = JSON.parse(localStorage.getItem("session")).user_id;
     let state = store.getState();
     let data = { user: state.profile.desc };
-    console.log(data)
+    console.log(data);
     put("/users/" + id, data).then(resp => {
         console.log(resp);
         Object.assign(resp.data, { hint: "success" });
@@ -98,10 +98,10 @@ export function change_profile_desc() {
 }
 
 export function change_location(lan, lon) {
-    console.log("change_location")
-    console.log(lan + "," + lon)
+    console.log("change_location");
+    console.log(lan + "," + lon);
     let id = JSON.parse(localStorage.getItem("session")).user_id;
-    let data = { latitude: lan, longitude: lon }
+    let data = { latitude: lan, longitude: lon };
     put("/users/" + id, data).then(resp => {
         console.log(resp);
         Object.assign(resp.data, {});
@@ -124,27 +124,25 @@ export function upload_photo(form) {
         store.dispatch({
             type: "UPLOAD",
             data: { errors: "Photo size is larger than 7MB" }
-        })
-    }
-
-    console.log(data.new_photo.name);
-
-    let reader = new FileReader();
-    reader.addEventListener("load", () => {
-        console.log("post photos");
-        post("/photos", {
-            photo: {
-                desc: data.photo_desc,
-                filename: data.new_photo.name,
-                photo_upload: reader.result
-            }
-        }).then(resp => {
-            if (resp.data) {
-                form.redirect("/all_photos");
-            }
         });
-    });
-    reader.readAsDataURL(data.new_photo);
+    } else {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+            console.log("post photos");
+            post("/photos", {
+                photo: {
+                    desc: data.photo_desc,
+                    filename: data.new_photo.name,
+                    photo_upload: reader.result
+                }
+            }).then(resp => {
+                if (resp.data) {
+                    form.redirect("/all_photos");
+                }
+            });
+        });
+        reader.readAsDataURL(data.new_photo);
+    }
 }
 
 export function show_all_photos() {
@@ -250,7 +248,10 @@ export function change_tags() {
 export function get_recommendation() {
     let state = store.getState();
     let data = state.users;
-    post("/find_friends", { latitude: data.latitude, longitude: data.longitude }).then(resp => {
+    post("/find_friends", {
+        latitude: data.latitude,
+        longitude: data.longitude
+    }).then(resp => {
         console.log(resp);
         store.dispatch({
             type: "USERS",
@@ -269,12 +270,11 @@ export function get_my_interests_photo_by_id(id) {
                 current_photos: resp.data
             }
         });
-    })
+    });
 }
 
 export function like_user(id) {
     post("/likes/", { like_to_id: id }).then(resp => {
         // do nothing
     });
-
 }

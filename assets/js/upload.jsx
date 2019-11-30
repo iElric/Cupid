@@ -56,7 +56,7 @@ class UploadNewPhoto extends React.Component {
     let file_name = new_photo == null ? "Browse for file(jpg, png, jpeg)" : new_photo.name;
     let error_msg = null;
     if (errors) {
-      error_msg = <Alert variant="danger">errors</Alert>;
+      error_msg = <Alert variant="danger">{errors}</Alert>;
     }
     return (
       <div>
