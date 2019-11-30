@@ -33,7 +33,8 @@ defmodule Cupid.GeocodeApi do
   def isExcludeTypes(e) do
     Enum.member?(e, "street_number") ||
       Enum.member?(e, "route")||
-      Enum.member?(e, "postal_code")
+      Enum.member?(e, "postal_code") ||
+      Enum.member?(e, "postal_code_suffix")
   end
 
   def api_key do
