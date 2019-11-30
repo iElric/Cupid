@@ -15,6 +15,7 @@ import AllPhotos from "./all_photos"
 import store from "./store";
 import { Index } from "./mock_page"
 import Community from "./community"
+import DebugRouter from "./debug_router"
 
 
 export default function init_page(root) {
@@ -26,9 +27,10 @@ export default function init_page(root) {
   ReactDOM.render(tree, root);
 }
 
+
 function Page(props) {
   return (
-    <Router>
+    <DebugRouter>
       <Navbar bg="dark" variant="dark">
         <Col md = "10">
             <Nav>
@@ -84,13 +86,17 @@ function Page(props) {
           <PrivateRoute exact path="/community">
               <Community />
           </PrivateRoute>
+{/* 
+          <PrivateRoute exact path="/community/:id">
+              <Community />
+          </PrivateRoute> */}
 
         <PrivateRoute exact path="/profile">
           <Profile />
         </PrivateRoute>
 
       </Switch>
-    </Router>
+    </DebugRouter>
   );
 }
 
