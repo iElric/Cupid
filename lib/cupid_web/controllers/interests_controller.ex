@@ -66,11 +66,13 @@ defmodule CupidWeb.InterestsController do
     IO.inspect params
     IO.inspect lan
     IO.inspect lon
+
     users_near_by = if lon !== 0 and lan !== 0 do
       addr = GeocodeApi.getLocation(%{:latitude => lan, :longitude => lon})
       # database update
       Users.update_user_lan_lon_by_id(current_user_id, lan, lon, addr)
-      Users.get_user_by_radius(current_user_id)
+      # get nearby user with opposite gender
+      Users.get_user_by_radius(current_user_id) |> Enum.filter(fn id -> Users.get_user!(id).gender !== current_user_gender end)
     else
       []
     end
@@ -86,7 +88,7 @@ defmodule CupidWeb.InterestsController do
     IO.inspect users_liked
     IO.inspect users_matched
     # use parentheses to ensure the right order
-    recommended_users = (Enum.uniq(users_same_interests ++ users_near_by) -- users_liked) -- users_matched |> Enum.map(fn x -> Users.get_user!(x)end)
+    recommended_users = (Enum.uniq(users_same_interests ++ users_near_by)  -- users_liked) -- users_matched |> Enum.map(fn x -> Users.get_user!(x)end)
     render(conn, "browse.json", match_user: recommended_users)
   end
 
