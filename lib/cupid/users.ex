@@ -138,11 +138,11 @@ defmodule Cupid.Users do
     |> Enum.map(fn x ->
       one_lan = x[:lan]
       one_lon = x[:lon]
-      sin_lan = Math.sin(curr_lan) * Math.sin(one_lan)
-      cos_val = Math.cos(curr_lan) * Math.cos(one_lan)
-      cos_val = cos_val * Math.cos(curr_lon - one_lon)
-      dist = Math.acos(sin_lan + cos_val) * km_radius
-      Math.put(x, :distance, dist)
+      sin_lan = :math.sin(curr_lan) * :math.sin(one_lan)
+      cos_val = :math.cos(curr_lan) * :math.cos(one_lan)
+      cos_val = cos_val * :math.cos(curr_lon - one_lon)
+      dist = :math.acos(sin_lan + cos_val) * km_radius
+      Map.put(x, :distance, dist)
     end)
     |> Enum.filter(fn x -> x[:distance] < 5 end) # return all the ppl within 5km distance
   end
