@@ -22,7 +22,7 @@ class Discovers extends React.Component
                 callback(position.coords.latitude, position.coords.longitude)
             });
         } else {
-            alert("Sorry, your browser does not support HTML5 geolocation.");
+            callback(0, 0);
         }
     }
 
