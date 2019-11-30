@@ -42,30 +42,27 @@ class Users extends React.Component {
 
   nextPhoto() {
     let { current_photos, photo_index } = this.props;
-    if (current_photos.length <= photo_index + 1) {
-      this.setState({ errors: "This is the last photo of this user" });
-    } else {
-      photo_index = photo_index + 1;
-      this.props.dispatch({
-        type: "USERS",
-        data: { photo_index: photo_index }
-      });
-      this.setState({ errors: null });
-    }
+    photo_index = (photo_index + 1) % current_photos.length;
+    this.props.dispatch({
+      type: "USERS",
+      data: { photo_index: photo_index }
+    });
+    this.setState({ errors: null });
+
   }
 
   previousPhoto() {
-    let { photo_index } = this.props;
+    let { current_photos, photo_index } = this.props;
     if (photo_index === 0) {
-      this.setState({ errors: "This is the first photo of this user" });
+      photo_index = current_photos.length - 1;
     } else {
       photo_index = photo_index - 1;
-      this.props.dispatch({
+    }
+    this.props.dispatch({
         type: "USERS",
         data: { photo_index: photo_index }
       });
       this.setState({ errors: null });
-    }
   }
 
   like() {
@@ -158,6 +155,7 @@ class Users extends React.Component {
       error_msg = <Alert variant="danger">{this.state.errors}</Alert>;
     }
 
+    console.log(photo_index);
     let photo_info =
       current_photos.length === 0 ? "" : current_photos[photo_index].photo;
     let photo_desc =
