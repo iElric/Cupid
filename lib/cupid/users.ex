@@ -129,22 +129,24 @@ defmodule Cupid.Users do
 
   def get_user_by_radius(id) do
     curr_user = Repo.get_by(User, id: id)
-    curr_lan = curr_user[:lan]
-    curr_lon = curr_user[:lon]
+    IO.inspect curr_user
+    curr_lan = Decimal.to_float(curr_user.lan)
+    curr_lon = Decimal.to_float(curr_user.lon)
 
     km_radius = 6373
     list_users()
-    |> Enum.filter(fn x -> x[:lan] != 0 && x[:lon] != 0 end)
+    |> Enum.filter(fn x -> x.lan !== 0 and x.lon !== 0 and x.id !== id end)
     |> Enum.map(fn x ->
-      one_lan = x[:lan]
-      one_lon = x[:lon]
+      one_lan = Decimal.to_float(x.lan)
+      one_lon = Decimal.to_float(x.lon)
       sin_lan = :math.sin(curr_lan) * :math.sin(one_lan)
       cos_val = :math.cos(curr_lan) * :math.cos(one_lan)
       cos_val = cos_val * :math.cos(curr_lon - one_lon)
       dist = :math.acos(sin_lan + cos_val) * km_radius
       Map.put(x, :distance, dist)
     end)
-    |> Enum.filter(fn x -> x[:distance] < 5 end) # return all the ppl within 5km distance
+    |> Enum.filter(fn x -> x.distance < 5 end) # return all the ppl within 5km distance
+    |> Enum.map(fn x -> x.id end)
   end
 
 end

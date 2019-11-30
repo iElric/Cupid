@@ -27,7 +27,7 @@ defmodule CupidWeb.Router do
     resources "/photos", PhotoController, except: [:new, :edit]
     resources "/likes", LikeController, except: [:new, :edit]
     resources "/users", UserController
-    get "/find_friends", InterestsController, :browse
+    post "/find_friends", InterestsController, :browse
     get "/match_photos/:id", PhotoController, :match_photo
   end
 

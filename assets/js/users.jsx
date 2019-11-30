@@ -23,7 +23,7 @@ class Users extends React.Component {
   componentDidMount() {
     this.props.dispatch({
       type: "USERS",
-      data: { info: null, current_photos: null, user_index: 0, photo_index: 0 }
+      data: { info: null, current_photos: null, user_index: 0, photo_index: 0, latitude: 0, longitude: 0 }
     });
   }
 
@@ -101,12 +101,37 @@ class Users extends React.Component {
     }
   }
 
+  showPosition(callback) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        callback(position.coords.latitude, position.coords.longitude)
+      });
+    } else {
+      // TODO: change alert
+      alert("Sorry, your browser does not support HTML5 geolocation.");
+    }
+  }
+
+  changeLongAndLat(latitude, longitude) {
+    console.log(this);
+    this.props.dispatch({
+      type: "USERS",
+      data: {latitude: latitude, longitude: longitude}
+    })
+  }
+
+
+
+
   render() {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
     }
+    console.log(this.props);
 
-    let { info, current_photos, user_index, photo_index } = this.props;
+    this.showPosition(this.changeLongAndLat.bind(this));
+    
+    let { info, current_photos, user_index, photo_index} = this.props;
     if (info == null) {
       get_recommendation();
       return <p>Loading</p>;
@@ -173,7 +198,7 @@ class Users extends React.Component {
                 </IconButton>
               </div>
               <div className="col-6">
-                <IconButton className= "align-right-button" onClick={() => this.like()}>
+                <IconButton className="align-right-button" onClick={() => this.like()}>
                   <FaSmile id="smile" size="3em" />
                   Like
                 </IconButton>

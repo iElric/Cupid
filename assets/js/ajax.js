@@ -241,7 +241,9 @@ export function change_tags() {
 }
 
 export function get_recommendation() {
-    get("/find_friends").then(resp => {
+    let state = store.getState();
+    let data = state.users;
+    post("/find_friends", {latitude: data.latitude, longitude: data.longitude}).then(resp => {
         console.log(resp);
         store.dispatch({
             type: "USERS",

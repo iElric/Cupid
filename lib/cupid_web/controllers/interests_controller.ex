@@ -6,6 +6,7 @@ defmodule CupidWeb.InterestsController do
   alias Cupid.Users
   alias Cupid.Likes
   alias Cupid.Matches
+  alias Cupid.GeocodeApi
 
   action_fallback CupidWeb.FallbackController
   plug CupidWeb.Plugs.RequireAuth when action in [:index, :create, :update, :delete, :browse]
@@ -54,11 +55,28 @@ defmodule CupidWeb.InterestsController do
   Assemble recommended list here.
   recommended_users = users_same_interests ++ users_near_by -- users_liked -- users_matched
   """
-  def browse(conn, _params) do
+  def browse(conn, %{"latitude" => lan, "longitude" => lon} = params) do
+
     # get the users who have two or more interests with current user
     current_user_id = conn.assigns[:current_user].id
     # get the gender of current user
     current_user_gender = conn.assigns[:current_user].gender
+    # get the location based on Lat and Lon through Google Geocode api
+    IO.inspect "----------lan----------------lon"
+    IO.inspect params
+    IO.inspect lan
+    IO.inspect lon
+    users_near_by = if lon !== 0 and lan !== 0 do
+      addr = GeocodeApi.getLocation(%{:latitude => lan, :longitude => lon})
+      # database update
+      Users.update_user_lan_lon_by_id(current_user_id, lan, lon, addr)
+      Users.get_user_by_radius(current_user_id)
+    else
+      []
+    end
+
+    IO.inspect users_near_by
+
     users_same_interests = Interest.get_match_user_id(current_user_id)
     # filter the users with the same gender as current user
     users_same_interests = users_same_interests |> Enum.filter(fn id -> Users.get_user!(id).gender !== current_user_gender end)
@@ -68,7 +86,7 @@ defmodule CupidWeb.InterestsController do
     IO.inspect users_liked
     IO.inspect users_matched
     # use parentheses to ensure the right order
-    recommended_users = (users_same_interests -- users_liked) -- users_matched |> Enum.map(fn x -> Users.get_user!(x)end)
+    recommended_users = (Enum.uniq(users_same_interests ++ users_near_by) -- users_liked) -- users_matched |> Enum.map(fn x -> Users.get_user!(x)end)
     render(conn, "browse.json", match_user: recommended_users)
   end
 
