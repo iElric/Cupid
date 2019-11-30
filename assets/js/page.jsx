@@ -48,7 +48,7 @@ function Page(props) {
                 activeClassName="active"
                 className="nav-link"
               >
-                < FaRegUser />Profile
+                < FaRegUser /> Profile
                     </NavLink>
             </Nav.Item>
             <Nav.Item className="col-2">
@@ -58,7 +58,7 @@ function Page(props) {
                 activeClassName="active"
                 className="nav-link"
               >
-                <FaHeartbeat />Discover
+                <FaHeartbeat /> Discover
                 </NavLink>
             </Nav.Item>
             <Nav.Item className="col-2">
@@ -68,7 +68,7 @@ function Page(props) {
                 activeClassName="active"
                 className="nav-link"
               >
-                <FaRegComment />Matches
+                <FaRegComment /> Matches
                 </NavLink>
             </Nav.Item>
           </Nav>
