@@ -58,7 +58,7 @@ function Page(props) {
                   activeClassName="active"
                   className="nav-link"
                 >
-                  <FaHeartbeat />Users
+                  <FaHeartbeat />Discover
                 </NavLink>
               </Nav.Item>
               <Nav.Item className="col-2">
