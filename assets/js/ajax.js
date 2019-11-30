@@ -82,10 +82,11 @@ export function get_profile() {
     });
 }
 
-export function change_profile_desc(form) {
+export function change_profile_desc() {
     let id = JSON.parse(localStorage.getItem("session")).user_id;
     let state = store.getState();
     let data = { user: state.profile.desc };
+    console.log(data)
     put("/users/" + id, data).then(resp => {
         console.log(resp);
         Object.assign(resp.data, { hint: "success" });
@@ -237,4 +238,34 @@ export function change_tags() {
             });
         });
     }
+}
+
+export function get_recommendation() {
+    get("/find_friends").then(resp => {
+        console.log(resp);
+        store.dispatch({
+            type: "USERS",
+            data: {
+                info: resp.data
+            }
+        });
+    });
+}
+
+export function get_my_interests_photo_by_id(id) {
+    get("/match_photos/" + id).then(resp => {
+        store.dispatch({
+            type: "USERS",
+            data: {
+                current_photos: resp.data
+            }
+        });
+    })
+}
+
+export function like_user(id) {
+    post("/likes/", { like_to_id: id }).then(resp => {
+        // do nothing
+    });
+
 }

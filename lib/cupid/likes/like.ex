@@ -5,7 +5,7 @@ defmodule Cupid.Likes.Like do
   schema "likes" do
     # have to have different association names
     belongs_to(:user_like_from, Cupid.Users.User, foreign_key: :like_from_id)
-    belongs_to(:user_like_add, Cupid.Users.User, foreign_key: :like_to_id)
+    belongs_to(:user_like_to, Cupid.Users.User, foreign_key: :like_to_id)
 
     timestamps()
   end

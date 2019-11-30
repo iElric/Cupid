@@ -18,6 +18,13 @@ class AddTag extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.dispatch({
+      type: "ADD_TAGS",
+      data: {all_tags: null, current_tag: null, added_tag: null, errors: null, status: null}
+    });
+  }
+
   redirect(path) {
     this.setState({
       redirect: path

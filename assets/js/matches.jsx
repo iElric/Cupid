@@ -14,6 +14,13 @@ class Matches extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.dispatch({
+        type: "MATCHES",
+        data: {matches: null, selected: null}
+      });
+}
+
   changed(data) {
     this.props.dispatch({
       type: "MATCHES",

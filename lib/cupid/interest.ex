@@ -103,6 +103,14 @@ defmodule Cupid.Interest do
       %Ecto.Changeset{source: %Interests{}}
 
   """
+  def get_match_user_id(user_id) do
+    current_user_interests = list_interest_by_user_id(user_id)
+    current_user_tag_ids = Enum.map(current_user_interests, fn x-> x.tag_id end)
+    query = from(i in Interests, where: i.tag_id in ^current_user_tag_ids,
+    group_by: i.user_id, having: count(i.id) >= 2 and i.user_id != ^user_id, select: i.user_id)
+    Repo.all(query)
+  end
+
   def change_interests(%Interests{} = interests) do
     Interests.changeset(interests, %{})
   end

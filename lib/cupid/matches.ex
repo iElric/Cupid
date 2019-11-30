@@ -58,9 +58,14 @@ defmodule Cupid.Matches do
 
   """
   def create_match(attrs \\ %{}) do
-    %Match{}
-    |> Match.changeset(attrs)
-    |> Repo.insert()
+    {:ok, match} = %Match{}
+                  |> Match.changeset(attrs)
+                  |> Repo.insert(on_conflict: :nothing)
+    if is_nil(match.id) do
+      {:error, "Match relationship is unique"}
+    else
+      {:ok, match}
+    end
   end
 
   @doc """

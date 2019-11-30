@@ -78,6 +78,16 @@ function add_tags(st0 = { all_tags: null, current_tag: null, added_tag: null, er
 }
 
 
+function users(st0 = { info: null, current_photos: null, user_index: 0, photo_index: 0 }, action) {
+    switch (action.type) {
+        case "USERS":
+            return Object.assign({}, st0, action.data);
+        default:
+            return st0;
+    }
+}
+
+
 function forms(st0, action) {
     let reducer = combineReducers({
         signup,
@@ -96,6 +106,7 @@ function session(st0 = session0, action) {
         case 'LOG_IN':
             return action.data;
         case 'LOG_OUT':
+            console.log("log out")
             return null;
         default:
             return st0;
@@ -114,6 +125,7 @@ function geolocation(st0 = {latitude: 0, longitude: 0}, action) {
 
 function root_reducer(st0, action) {
     console.log("root reducer", st0, action);
+
     let reducer = combineReducers({
         forms,
         session,
@@ -123,10 +135,11 @@ function root_reducer(st0, action) {
         all_photos,
         matches,
         add_tags,
-        geolocation,
+        users,
     });
     return deepFreeze(reducer(st0, action));
 }
+
 
 
 let store = createStore(root_reducer);

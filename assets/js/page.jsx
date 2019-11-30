@@ -15,8 +15,12 @@ import AllPhotos from "./all_photos"
 import UploadNewPhoto from "./upload"
 import Matches from './matches'
 import AddTag from './add_tag'
+import Users from "./users"
+import Index from "./index"
+import ChangeDesc from "./change_desc"
 import store from "./store";
 import Discovers from './discovers'
+import { FaHeartbeat, FaHome , FaRegUser, FaRegComment} from "react-icons/fa";
 
 export default function init_page(root) {
   let tree = (
@@ -30,42 +34,42 @@ export default function init_page(root) {
 function Page(props) {
   return (
     <Router>
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg="light" variant="primary">
         <Col md = "10">
             <Nav>
-              <Nav.Item>
+              <Nav.Item className="col-2">
                 <NavLink to="/" exact activeClassName="active" className="nav-link">
-                  Home
+                  <FaHome /> Home
                 </NavLink>
               </Nav.Item>
-                <Nav.Item>
+                <Nav.Item className="col-2">
                     <NavLink
                         to="/profile"
                         exact
                         activeClassName="active"
                         className="nav-link"
                     >
-                        Profile
+                        < FaRegUser/>Profile
                     </NavLink>
                 </Nav.Item>
-              <Nav.Item>
+              <Nav.Item className="col-2">
                 <NavLink
                   to="/users"
                   exact
                   activeClassName="active"
                   className="nav-link"
                 >
-                  Users
+                  <FaHeartbeat />Discover
                 </NavLink>
               </Nav.Item>
-              <Nav.Item>
+              <Nav.Item className="col-2">
                 <NavLink
                   to="/matches"
                   exact
                   activeClassName="active"
                   className="nav-link"
                 >
-                  Friends
+                  <FaRegComment/>Friends
                 </NavLink>
               </Nav.Item>
                 <Nav.Item>
@@ -80,14 +84,14 @@ function Page(props) {
                 </Nav.Item>
             </Nav>
         </Col>
-          <Col md = "2">
-              <Session />
-          </Col>
+        <Col md = "2">
+            <Session />
+        </Col>
       </Navbar>
 
       <Switch>
           <Route exact path="/">
-              <h1>This is the index page of Cupid</h1>
+              <Index />
           </Route>
         <Route exact path="/login">
           <Login />
@@ -127,6 +131,14 @@ function Page(props) {
           <AddTag />
         </Route>
 
+        <Route exact path="/users">
+          <Users />
+        </Route>
+
+        <Route exact path="/change_desc">
+          <ChangeDesc />
+        </Route>
+
       </Switch>
     </Router>
   );
@@ -150,7 +162,7 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
     return (
         <Nav>
           <Nav.Item>
-            <p className="text-light py-2">User: {session.user_name}</p>
+            <p className="nav-link py-2">{session.user_name}</p>
           </Nav.Item>
           <Nav.Item>
             <a className="nav-link" href="#" onClick={logout}>Logout</a>

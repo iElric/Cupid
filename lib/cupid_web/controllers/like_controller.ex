@@ -3,20 +3,39 @@ defmodule CupidWeb.LikeController do
 
   alias Cupid.Likes
   alias Cupid.Likes.Like
+  alias Cupid.Matches
 
   action_fallback CupidWeb.FallbackController
+
+  plug CupidWeb.Plugs.RequireAuth when action in [:create, :show, :delete]
 
   def index(conn, _params) do
     likes = Likes.list_likes()
     render(conn, "index.json", likes: likes)
   end
 
-  def create(conn, %{"like" => like_params}) do
-    with {:ok, %Like{} = like} <- Likes.create_like(like_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.like_path(conn, :show, like))
-      |> render("show.json", like: like)
+  def create(conn, %{"like_to_id" => like_to_id}) do
+    like_from_id = conn.assigns[:current_user].id
+    # check if the reverse realtion exist
+    reverse_realtion = Likes.get_like(like_to_id, like_from_id)
+    IO.inspect reverse_realtion
+    if reverse_realtion do
+      # remove the reverse like realtion
+      Likes.delete_like(reverse_realtion)
+      # add to match
+      Matches.create_match(%{user1_id: like_to_id, user2_id: like_from_id})
+      send_resp(conn, :no_content, "")
+    else
+      like_params = %{
+        like_from_id: like_from_id,
+        like_to_id: like_to_id
+      }
+      with {:ok, %Like{} = like} <- Likes.create_like(like_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.like_path(conn, :show, like))
+        |> render("show.json", like: like)
+      end
     end
   end
 

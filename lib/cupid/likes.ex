@@ -37,6 +37,16 @@ defmodule Cupid.Likes do
   """
   def get_like!(id), do: Repo.get!(Like, id)
 
+  def get_like(like_from_id, like_to_id) do
+    query = from(l in Like, where: l.like_from_id == ^like_from_id and l.like_to_id == ^like_to_id)
+    Repo.one(query)
+  end
+
+  def get_likes_by_like_from_id(like_from_id) do
+    query = from(l in Like, where: l.like_from_id == ^like_from_id)
+    Repo.all(query)
+  end
+
   @doc """
   Creates a like.
 

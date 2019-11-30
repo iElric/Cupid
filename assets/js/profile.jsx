@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Button, Alert, ListGroup, Form} from "react-bootstrap";
 import { Redirect } from "react-router";
 import { get_profile } from "./ajax";
-import { change_profile_desc } from "./ajax";
 import { get_my_interests } from "./ajax";
+import { FaHeart, FaRegAddressCard } from "react-icons/fa";
+import { IoIosMail, IoIosPerson, IoMdPhotos,  IoIosPhotos, IoMdHeartEmpty} from "react-icons/io";
+import { IconButton } from "@material-ui/core";
 //import { submit_login } from './ajax';
 
 class Profile extends React.Component {
@@ -15,6 +17,13 @@ class Profile extends React.Component {
     this.state = {
       redirect: null
     };
+  }
+
+  componentDidMount() {
+    this.props.dispatch({
+      type: "SHOW_PROFILE",
+      data: {email: null, name: null, desc: null, my_interests: null, hint: null, errors: null}
+    });
   }
 
   redirect(path) {
@@ -67,90 +76,76 @@ class Profile extends React.Component {
     if (errors) {
       error_msg = <Alert variant="danger">{errors}</Alert>;
     }
-    let hint_msg = null;
-    if (hint) {
-      hint_msg = <Alert variant="primary">{hint}</Alert>;
-    }
 
-    let interest_name = my_interests.map(x => x.tag_name);
-    console.log(interest_name);
-
-    let interests = "";
-    if (interest_name.length > 0) {
-      const reducer = (accumulator, currentValue) =>
-        accumulator + ", " + currentValue;
-      interests = interest_name.reduce(reducer);
-      console.log(interests);
-    }
+    let interest_name = my_interests.map(x => (
+      <ListGroup as="ul" key={x.id}>
+        <ListGroup.Item as="li" variant="primary">
+          {x.tag_name}
+        </ListGroup.Item>
+      </ListGroup>
+    ));
 
     return (
-      <div>
+      <div className="profile">
         <h1>Profile</h1>
-        {error_msg}
-        {hint_msg}
-        <Form.Group controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            disabled
-            type="text"
-            value={email}
-            onChange={ev => this.changed({ email: ev.target.value })}
-          />
-        </Form.Group>
-        <Form.Group controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            disabled
-            type="text"
-            value={name}
-            onChange={ev => this.changed({ name: ev.target.value })}
-          />
-        </Form.Group>
-        <Form.Group controlId="desc">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            value={desc}
-            onChange={ev => this.changed({ desc: ev.target.value })}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="interest">
-          <Form.Label>Interest</Form.Label>
-          <Form.Control
-            disabled
-            type="text"
-            value={interests}
-            onChange={ev => this.changed({ name: ev.target.value })}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="submit">
-          <Button variant="primary" onClick={() => change_profile_desc(this)}>
-            Submit
-          </Button>
-        </Form.Group>
-
-        <Button
-          id="profile_upload_new_photo_button"
+        <IconButton
           onClick={() => this.setState({ redirect: "./upload_new_photo" })}
         >
-          Upload New Photo
-        </Button>
+          < IoIosPhotos className="layer" size="1em" color="pink" />
+          Upload
+        </IconButton>
 
-        <Button
-          id="profile_show_all_photos_button"
-          onClick={() => this.setState({ redirect: "./all_photos" })}
-        >
-          Show All My Photos
-        </Button>
+        <IconButton onClick={() => this.setState({ redirect: "./all_photos" })}>
+          <IoMdPhotos size="1em" color="pink"/>Photos
+        </IconButton>
+        {error_msg}
 
-        <Button
-          id="profile_add_tag_button"
-          onClick={() => this.setState({ redirect: "./add_tags" })}
-        >
-          Add Interests
-        </Button>
+        <div className="col-md profile-item">
+          <span>
+            <IoIosMail color="dodgerblue" />
+            Email
+          </span>
+          <hr />
+          <Alert variant="success">{email}</Alert>
+        </div>
+
+        <div className="col-md profile-item">
+          <span>
+            <IoIosPerson color="dodgerblue" />
+            Name
+          </span>
+          <hr />
+          <Alert variant="warning">{name}</Alert>
+        </div>
+
+        <div className="col-md profile-item">
+          <span>
+            <FaRegAddressCard color="dodgerblue" />
+            Description
+          </span>
+          <Button
+            className="align-right-button"
+            onClick={() => this.setState({ redirect: "./change_desc" })}
+          >
+            Modify
+          </Button>
+          <hr />
+          <Alert variant="info" className="overflow-auto">{desc}</Alert>
+        </div>
+
+        <div className="col-md profile-item">
+          <span><IoMdHeartEmpty color="dodgerblue" />My Interests</span>
+          <Button
+            className="align-right-button"
+            onClick={() => this.setState({ redirect: "./add_tags" })}
+          >
+            Add
+          </Button>
+          <hr />
+        </div>
+        <div className="col-md">
+          <div className="col-md row">{interest_name}</div>
+        </div>
       </div>
     );
   }
