@@ -1,22 +1,31 @@
-defmodule Cupid..GeocodeApi do
+defmodule Cupid.GeocodeApi do
 
   def getLocation(params) do
-    query = []
+    case params do
+      nil -> ""
+      "" -> ""
+      _ -> query = []
             |>Keyword.put(:key, api_key())
             |>Keyword.put(:latlng, transform_param(params))
             |>URI.encode_query()
-    resp = HTTPoison.get!("#{url()}?#{query}")
-    Poison.decode!(resp.body)
-    |>Map.get("results")
-    |>Enum.at(0)
-    |>Map.get("address_components")
-    |>getRegion()
-    |>Map.reduce("", fn (x, total) -> "#{total},#{x}" end)
-    |>String.strip(?,)
+
+            IO.inspect(query)
+            IO.inspect("#{url()}?#{query}")
+            resp = HTTPoison.get!("#{url()}?#{query}")
+            IO.inspect("resp")
+            IO.inspect(resp)
+            Jason.decode!(resp.body)
+            |>Map.get("results")
+            |>Enum.at(0)
+            |>Map.get("address_components")
+            |>getRegion()
+            |>Enum.reduce("", fn (x, total) -> "#{total},#{x}" end)
+            |>String.strip(?,)
+    end
   end
 
-  def getRegion() do
-    address
+  def getRegion(address_compoents) do
+    address_compoents
     |> Enum.filter(fn x -> !isExcludeTypes(Map.get(x, "types")) end)
     |> Enum.map(fn x -> Map.get(x, "long_name") end)
   end
@@ -32,8 +41,8 @@ defmodule Cupid..GeocodeApi do
   end
 
   def transform_param(params) do
-    lat = Map.get(params, :latitude)
-    lon = Map.get(params, :longitude)
+    lat = params[:latitude]
+    lon = params[:longitude]
     "#{lat},#{lon}"
   end
 

@@ -118,12 +118,12 @@ defmodule Cupid.Users do
     |> Repo.update()
   end
 
-  def update_user_lan_lon_by_id(id, lan, lon) do
+  def update_user_lan_lon_by_id(id, lan, lon, addr) do
     pi = 3.14159265
     lan = pi * lan / 180
     lon = pi * lon / 180
     Repo.get_by(User, id: id)
-    |> Ecto.Changeset.change(%{lan: lan, lon: lon})
+    |> Ecto.Changeset.change(%{lan: lan, lon: lon, addr: addr})
     |> Repo.update()
   end
 
