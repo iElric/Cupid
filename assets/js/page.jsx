@@ -68,7 +68,7 @@ function Page(props) {
                 activeClassName="active"
                 className="nav-link"
               >
-                <FaRegComment />Friends
+                <FaRegComment />Matches
                 </NavLink>
             </Nav.Item>
           </Nav>
