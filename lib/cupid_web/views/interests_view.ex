@@ -25,6 +25,13 @@ defmodule CupidWeb.InterestsView do
   end
 
   def render("browse_result.json", %{interests: match_user}) do
-    %{user_id: match_user.id, user_name: match_user.name, user_desc: match_user.desc}
+    IO.inspect(match_user)
+
+    %{
+      user_id: match_user.id,
+      user_name: match_user.name,
+      user_desc: match_user.desc,
+      user_addr: match_user.addr
+    }
   end
 end

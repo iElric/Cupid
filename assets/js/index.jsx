@@ -10,12 +10,12 @@ export default class Index extends React.Component {
   render() {
     return (
       <div>
-        <h1>&#128144;Cupid  &#128149;&#128158;  </h1>
+        <h1><img src={cupid_img} height="50" width="50"/>Cupid  <img src={hearts_img} height="10%" width="10%"/></h1>
         <p>Cupid is a location-based social, networking and dating Web application. This application is designed to connect users from different backgrounds but with the same interests together.</p>
         <h3>< FaRegUser /> Profile</h3>
           <ul>
           <li>View basic information of yourself </li>
-          <img src="https://cdn.pixabay.com/photo/2012/05/07/04/33/heart-47946_1280.png" height="300" width="570"
+          <img src={pink_heart_img} height="300" width="570"
                    align="right"/>
           <li>Upload new photos</li>
           <li>Browse all your photos</li>

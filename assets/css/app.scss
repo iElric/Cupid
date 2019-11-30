@@ -74,15 +74,25 @@
 }
 
 #users {
-    align-content: center
+    align-content: center;
+    margin-top: 10px;
 }
 
 #user_name {
-    background-color: DodgerBlue;
     font-family: serif;
     color: white;
     text-align: center;
     font-size: 150%;
+    margin-bottom: 2px;
+}
+
+#user_card {
+    background-color: DodgerBlue;
+}
+
+.user_info {
+    color: white;
+    margin-bottom: 2px;
 }
 
 #user_text {

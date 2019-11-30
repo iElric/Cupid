@@ -156,6 +156,7 @@ class Users extends React.Component {
     }
 
     console.log(photo_index);
+    console.log(info)
     let photo_info =
       current_photos.length === 0 ? "" : current_photos[photo_index].photo;
     let photo_desc =
@@ -173,10 +174,10 @@ class Users extends React.Component {
             <div className="row">
               <div className="col-12 p-0">
                 <Card>
-                  <Card.Header id="user_name">
-                    Name: {info[user_index].user_name}
-                    <br />
-                    Desc: {info[user_index].user_desc}
+                  <Card.Header id="user_card">
+                    <p id="user_name">Name: {info[user_index].user_name}</p>
+                    <p className="user_info">Position: {info[user_index].user_addr}</p>
+                    <p className="user_info">Desc: {info[user_index].user_desc}</p>
                   </Card.Header>
                   <Card.Img
                     id="image"
