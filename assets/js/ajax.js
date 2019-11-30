@@ -1,4 +1,6 @@
 import store from "./store";
+import _ from "lodash";
+import { init_chat } from "./socket";
 
 export function post(path, body) {
     let state = store.getState();
@@ -69,6 +71,7 @@ export function submit_login(form) {
                     type: 'RESET_LOGIN'
                 });
                 form.redirect();
+                console.log(resp);
             }
             else {
                 console.log(resp.errors);
@@ -78,4 +81,42 @@ export function submit_login(form) {
                 });
             }
         });
+}
+
+export function get_friends(socket) {
+    get('/friends').then((resp) => {
+        if (resp) {
+            store.dispatch(
+                {
+                    type: 'CHANGE_FRIENDS',
+                    data: resp
+                }
+            );
+            return _.map(resp, (f) => (f.id));
+        } else {
+            console.log(resp.errors)
+        }
+    }).then((f) => {
+        if (f) {
+            init_chat(socket, f);
+        }
+    }
+   );
+}
+
+export function get_all_msg() {
+    get('all_msg').then(
+        (resp) => {
+            if (resp) {
+                store.dispatch(
+                    {
+                        type: 'NEW_MSG',
+                        data: resp
+                    }
+                );
+            } else {
+                console.log(resp.errors);
+            }
+        }
+    );
 }

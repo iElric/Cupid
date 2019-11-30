@@ -3,8 +3,12 @@ defmodule CupidWeb.UserController do
 
   alias Cupid.Users
   alias Cupid.Users.User
+  alias Cupid.Matches
 
   action_fallback CupidWeb.FallbackController
+
+  plug CupidWeb.Plugs.RequireAuth 
+    when action in [:friends]
 
   def index(conn, _params) do
     users = Users.list_users()
@@ -19,6 +23,14 @@ defmodule CupidWeb.UserController do
       |> put_resp_header("content-type", "application/json; charset=UTF-8")
       |> send_resp(:created, Jason.encode!(resp))
     end
+  end
+
+  def friends(conn, _params) do
+    user = conn.assigns[:current_user]
+    friends = Matches.list_friends(user.id)
+    conn
+    |> put_resp_header("content-type", "application/json; charset=UTF-8")
+    |> send_resp(:ok, Jason.encode!(friends))
   end
 
   def show(conn, %{"id" => id}) do

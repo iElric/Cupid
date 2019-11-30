@@ -15,7 +15,6 @@ defmodule CupidWeb.UserView do
       email: user.email,
       name: user.name,
       gender: user.gender,
-      password_hash: user.password_hash,
       desc: user.desc}
   end
 end

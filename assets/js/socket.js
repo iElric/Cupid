@@ -6,9 +6,30 @@
 //
 // Pass the token on params as below. Or remove it
 // from the params if you are not using authentication.
-import {Socket} from "phoenix"
+import { Socket } from "phoenix";
+import _ from "lodash";
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+
+export function init_socket(session) {
+  let socket = new Socket("/socket", {params: {token: session.token}})
+  socket.connect()
+  let channel = socket.channel("notification:"+session.user_id, {})
+channel.join()
+  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("error", resp => { console.log("Unable to join", resp) })
+  return socket;
+}
+
+export function init_chat(socket, friends) {
+  console.log(friends);
+  _.forEach(friends, (id) => {
+    let c = socket.channel("room:"+id, {});
+    c.join()
+      .receive("ok", resp => { console.log(`Joined room: ${id} successfully! `, resp) })
+      .receive("error", resp => { console.log(`Failed to joined room: ${id}! `, resp) });
+  });
+}
+
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -51,13 +72,4 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 //       end
 //     end
 //
-// Finally, connect to the socket:
-socket.connect()
 
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
-
-export default socket

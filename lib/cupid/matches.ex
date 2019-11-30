@@ -7,6 +7,7 @@ defmodule Cupid.Matches do
   alias Cupid.Repo
 
   alias Cupid.Matches.Match
+  alias Cupid.Users.User
 
   @doc """
   Returns the list of matches.
@@ -18,8 +19,37 @@ defmodule Cupid.Matches do
 
   """
   def list_matches do
-    Repo.all(Match)
+    Repo.all(from m in Match, preload: [:users_1, :users_2])
   end
+
+  def list_friends(id) do
+    query = from m in Match, 
+              where: m.user1_id == ^id or m.user2_id == ^id,
+              preload: [:users_1, :users_2]
+    Repo.all(query)
+    |> Enum.map( fn m -> 
+      if m.users_1.id == id do
+        %{id: m.id, user: friend(m.users_2)}  
+      else
+        %{id: m.id, user: friend(m.users_1)}  
+      end
+    end)
+  end
+
+  defp friend(%User{} = u) do
+    %{
+      id: u.id,
+      email: u.email,
+      name: u.name
+    }
+  end
+
+  def has_user(mid, uid) do
+    m = get_match!(mid)
+    uid == m.user1_id or uid == m.user2_id
+  end
+
+
 
   @doc """
   Gets a single match.

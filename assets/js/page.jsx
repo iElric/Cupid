@@ -16,6 +16,8 @@ import store from "./store";
 import { Index } from "./mock_page"
 import Community from "./community"
 import DebugRouter from "./debug_router"
+import { get_friends } from "./ajax"
+import { init_socket, init_chat } from "./socket";
 
 
 export default function init_page(root) {
@@ -52,7 +54,6 @@ function Page(props) {
               <Nav.Item>
                 <NavLink
                   to="/community"
-                  exact
                   activeClassName="active"
                   className="nav-link"
                 >
@@ -83,11 +84,11 @@ function Page(props) {
           <AllPhotos />
         </Route>
 
-          <PrivateRoute exact path="/community">
+          <PrivateRoute path="/community">
               <Community />
           </PrivateRoute>
-{/* 
-          <PrivateRoute exact path="/community/:id">
+
+          {/* <PrivateRoute exact path="/community/:id">
               <Community />
           </PrivateRoute> */}
 
@@ -133,6 +134,9 @@ let Session = withRouter(connect(({session}) => ({session}))(({session, dispatch
   }
 
   if (session) {
+    
+    let skt = init_socket(session);
+    get_friends(skt);
     return (
         <Nav>
           <Nav.Item>

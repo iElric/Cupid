@@ -71,12 +71,35 @@ function session(st0 = session0, action) {
     }
 }
 
+// add or remove friends
+function friends(st0 = [], action) {
+    switch (action.type) {
+        case 'CHANGE_FRIENDS':
+            return action.data;
+        default:
+            return st0;
+    }
+}
+
+
+function msg_box(st0 = {}, action) {
+    // expected data format {match_id: {all the message}}
+    switch (action.type) {
+        case 'NEW_MSG':
+            return Object.assign({}, st0, action.data);
+        default:
+            return st0;
+    }
+}
+
 
 function root_reducer(st0, action) {
     let reducer = combineReducers({
         forms,
         session,
         profile,
+        friends,
+        msg_box,
     });
     return deepFreeze(reducer(st0, action));
 }
