@@ -101,7 +101,7 @@ export function change_location(lan, lon) {
     console.log("change_location")
     console.log(lan + "," + lon)
     let id = JSON.parse(localStorage.getItem("session")).user_id;
-    let data = {latitude: lan, longitude: lon}
+    let data = { latitude: lan, longitude: lon }
     put("/users/" + id, data).then(resp => {
         console.log(resp);
         Object.assign(resp.data, {});
@@ -118,6 +118,13 @@ export function upload_photo(form) {
 
     if (data.new_photo == null) {
         return;
+    }
+
+    if (data.new_photo.size >= 7500000) {
+        store.dispatch({
+            type: "UPLOAD",
+            data: { errors: "Photo size is larger than 7MB" }
+        })
     }
 
     console.log(data.new_photo.name);
@@ -243,7 +250,7 @@ export function change_tags() {
 export function get_recommendation() {
     let state = store.getState();
     let data = state.users;
-    post("/find_friends", {latitude: data.latitude, longitude: data.longitude}).then(resp => {
+    post("/find_friends", { latitude: data.latitude, longitude: data.longitude }).then(resp => {
         console.log(resp);
         store.dispatch({
             type: "USERS",

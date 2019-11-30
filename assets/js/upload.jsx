@@ -53,10 +53,15 @@ class UploadNewPhoto extends React.Component {
     }
 
     let { new_photo, photo_desc, errors } = this.props;
-    let file_name = new_photo == null ? "Browse for file ..." : new_photo.name;
+    let file_name = new_photo == null ? "Browse for file(jpg, png, jpeg)" : new_photo.name;
+    let error_msg = null;
+    if (errors) {
+      error_msg = <Alert variant="danger">errors</Alert>;
+    }
     return (
       <div>
         <h1>Upload New Photo</h1>
+        {error_msg}
         <div className="row justify-content-center">
           <label
             htmlFor="fileUpload"
@@ -68,6 +73,7 @@ class UploadNewPhoto extends React.Component {
               id="fileUpload"
               type="file"
               onChange={ev => this.file_changed(ev)}
+              accept="image/png, image/jpeg, image/jpg"
             ></input>
           </label>
         </div>
