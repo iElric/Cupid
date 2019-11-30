@@ -78,7 +78,7 @@ function add_tags(st0 = { all_tags: null, current_tag: null, added_tag: null, er
 }
 
 
-function users(st0 = { info: null, current_photos: null, user_index: 0, photo_index: 0, longitude: 0, latitude: 0}, action) {
+function users(st0 = { info: null, current_photos: null, user_index: 0, photo_index: 0, longitude: null, latitude: null}, action) {
     switch (action.type) {
         case "USERS":
             return Object.assign({}, st0, action.data);

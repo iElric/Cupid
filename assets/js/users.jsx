@@ -23,7 +23,7 @@ class Users extends React.Component {
   componentDidMount() {
     this.props.dispatch({
       type: "USERS",
-      data: { info: null, current_photos: null, user_index: 0, photo_index: 0, latitude: 0, longitude: 0 }
+      data: { info: null, current_photos: null, user_index: 0, photo_index: 0, latitude: null, longitude: null }
     });
   }
 
@@ -101,38 +101,40 @@ class Users extends React.Component {
     }
   }
 
-  showPosition(callback) {
+  showPosition() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        callback(position.coords.latitude, position.coords.longitude)
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.props.dispatch({
+          type: "USERS",
+          data: { latitude: position.coords.latitude, longitude: position.coords.longitude }
+        })
+      }, () => {
+        this.props.dispatch({
+          type: "USERS",
+          data: { latitude: 0, longitude: 0 }
+        })
       });
     } else {
       // TODO: change alert
-      alert("Sorry, your browser does not support HTML5 geolocation.");
+      //alert("Sorry, your browser does not support HTML5 geolocation.");
     }
   }
-
-  changeLongAndLat(latitude, longitude) {
-    console.log(this);
-    this.props.dispatch({
-      type: "USERS",
-      data: {latitude: latitude, longitude: longitude}
-    })
-  }
-
-
 
 
   render() {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
     }
-    console.log(this.props);
+    let { info, current_photos, user_index, photo_index, latitude } = this.props;
 
-    this.showPosition(this.changeLongAndLat.bind(this));
-    
-    let { info, current_photos, user_index, photo_index} = this.props;
-    if (info == null) {
+    if (latitude === null) {
+      this.showPosition();
+      return <p>Loading</p>;
+    }
+
+    console.log(latitude);
+
+    if (info === null) {
       get_recommendation();
       return <p>Loading</p>;
     }
