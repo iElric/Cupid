@@ -18,6 +18,13 @@ class UploadNewPhoto extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.dispatch({
+      type: "UPLOAD",
+      data: {new_photo: null, photo_desc: "No description", errors: null}
+    });
+  }
+
   redirect(path) {
     this.setState({
       redirect: path
