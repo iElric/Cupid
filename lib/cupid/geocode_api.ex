@@ -38,7 +38,7 @@ defmodule Cupid.GeocodeApi do
   end
 
   def api_key do
-    "AIzaSyAoZAG1uh3UHjnTx0VprWZz2U3ZSkEotFI"
+
     # key here. please ask admin for this
   end
 
