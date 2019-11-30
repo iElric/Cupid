@@ -108,7 +108,8 @@ class Users extends React.Component {
       });
     } else {
       // TODO: change alert
-      alert("Sorry, your browser does not support HTML5 geolocation.");
+      // alert("Sorry, your browser does not support HTML5 geolocation.");
+      callback(0, 0)
     }
   }
 
