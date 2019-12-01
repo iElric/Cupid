@@ -1,6 +1,6 @@
 import store from "./store";
 import _ from "lodash";
-import { init_chat } from "./socket";
+import { init_channel } from "./socket";
 
 export function post(path, body) {
     let state = store.getState();
@@ -92,16 +92,20 @@ export function get_friends(socket) {
                     data: resp
                 }
             );
-            return _.map(resp, (f) => (f.id));
+            if(socket) {
+                // for each friend, initialize a channel
+                console.log(resp);
+                _.forEach(resp, (f) => {
+                    init_channel(f.id, socket)
+                }
+                    
+                );
+                console.log(resp);
+            }
         } else {
             console.log(resp.errors)
         }
-    }).then((f) => {
-        if (f) {
-            init_chat(socket, f);
-        }
-    }
-   );
+    });
 }
 
 export function get_all_msg() {

@@ -37,9 +37,19 @@ function login(st0 = default_login, action) {
 }
 
 
+
 function profile(st0 = { email: null, name: null, new_photo: null, description: null, all_photos: null, errors: null }, action) {
     switch (action.type) {
         case "SHOW_PROFILE":
+            return Object.assign({}, st0, action.data);
+        default:
+            return st0;
+    }
+}
+
+function chat(st0 = {text: ""}, action) {
+    switch (action.type) {
+        case "CHANGE_TEXT":
             return Object.assign({}, st0, action.data);
         default:
             return st0;
@@ -100,6 +110,7 @@ function root_reducer(st0, action) {
         profile,
         friends,
         msg_box,
+        chat,
     });
     return deepFreeze(reducer(st0, action));
 }

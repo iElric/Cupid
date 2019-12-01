@@ -17,7 +17,7 @@ import { Index } from "./mock_page"
 import Community from "./community"
 import DebugRouter from "./debug_router"
 import { get_friends } from "./ajax"
-import { init_socket, init_chat } from "./socket";
+import { init_socket, socket, channels } from "./socket";
 
 
 export default function init_page(root) {
@@ -134,9 +134,9 @@ let Session = withRouter(connect(({session}) => ({session}))(({session, dispatch
   }
 
   if (session) {
-    
-    let skt = init_socket(session);
-    get_friends(skt);
+    init_socket(session);
+    get_friends(socket);
+    console.log('hahahah');
     return (
         <Nav>
           <Nav.Item>

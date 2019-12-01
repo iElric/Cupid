@@ -8,27 +8,46 @@
 // from the params if you are not using authentication.
 import { Socket } from "phoenix";
 import _ from "lodash";
+import store from "./store";
 
+let socket = null;
+let channels = {};
 
 export function init_socket(session) {
-  let socket = new Socket("/socket", {params: {token: session.token}})
+  socket = new Socket("/socket", {params: {token: session.token}})
   socket.connect()
   let channel = socket.channel("notification:"+session.user_id, {})
 channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
-  return socket;
+  .receive("ok", resp => { 
+    console.log("Joined successfully", resp) 
+    channels['notification'] = channel;
+  })
+  .receive("error", resp => { console.log("Unable to join", resp) });
 }
 
-export function init_chat(socket, friends) {
-  console.log(friends);
-  _.forEach(friends, (id) => {
-    let c = socket.channel("room:"+id, {});
-    c.join()
-      .receive("ok", resp => { console.log(`Joined room: ${id} successfully! `, resp) })
-      .receive("error", resp => { console.log(`Failed to joined room: ${id}! `, resp) });
-  });
+export function init_channel(id, socket) {
+  let c = socket.channel("room:"+id, {});
+  c.join()
+    .receive("ok", resp => { 
+      console.log(`Joined room: ${id} successfully! `, resp) 
+      console.log(channels);
+      channels[id] = c;
+      store.dispatch({
+        type: 'NEW_MSG',
+        data: {[id]: resp.mbox}
+      });
+    })
+    .receive("error", resp => { console.log(`Failed to joined room: ${id}! `, resp) });
+    c.on("new_msg", data => {
+      store.dispatch({
+        type: 'NEW_MSG',
+        data: {[id]: data.mbox}
+      });
+    });
 }
+
+
+export { socket, channels };
 
 
 // When you connect, you'll often need to authenticate the client.

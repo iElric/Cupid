@@ -11,7 +11,8 @@ defmodule Cupid.Application do
       # Start the Ecto repository
       Cupid.Repo,
       # Start the endpoint when the application starts
-      CupidWeb.Endpoint
+      CupidWeb.Endpoint,
+      Cupid.BackupAgent
       # Starts a worker by calling: Cupid.Worker.start_link(arg)
       # {Cupid.Worker, arg},
     ]

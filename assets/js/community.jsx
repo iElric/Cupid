@@ -1,21 +1,21 @@
 import React from "react";
 import {
-    BrowserRouter as Router,
     Switch,
     Route,
-    NavLink, withRouter, useRouteMatch
+    NavLink, withRouter
 } from "react-router-dom";
 import { connect } from 'react-redux';
 import {Navbar, Nav, Row, InputGroup, FormControl, Button} from "react-bootstrap";
 import * as _ from "lodash";
 import store from "./store";
+import { channels } from "./socket"
 
 
 
 function Community(props) {
     let url = "/community";
     const friends = props.friends;
-    let mbox = store.getState();
+    let mbox = props.msg_box;
     let navs = _.map(
         friends, (f, index) => (
             <li key={"nav_"+index}>
@@ -37,7 +37,8 @@ function Community(props) {
             path={`${url}/${f.id}`}
             exact
             children={<ChatView 
-                contents={mbox.get(f.id)} 
+                mbox={ mbox[f.id] } 
+                id={f.id}
                 />}
         />
         ));
@@ -56,7 +57,6 @@ function Community(props) {
                     { routes }
                 </Switch>
                 
-                <Input />
             </div>
             </Row>
 
@@ -77,11 +77,12 @@ function Friend(props) {
 // Component for the box containing all the chat contents
 function ChatView(props) {
     // expected format for props.mbox
-    let mock = [{name: "tom", msg: "hello"}, 
-    {name: "alice", msg: "hello!"}, 
-    {name: "tom", msg: "let's talke"}]
+    // let mock = [{name: "tom", msg: "hello"}, 
+    // {name: "alice", msg: "hello!"}, 
+    // {name: "tom", msg: "let's talke"}]
+    console.log(props.mbox);
     let msgs = _.map(
-        mock, (msg, index) => (
+        props.mbox, (msg, index) => (
             <Message 
                 key={"msg_" + index} 
                 name={msg.name} 
@@ -89,8 +90,11 @@ function ChatView(props) {
         )
     );
     return (
-        <div className="chat-view border margin-top">
-            { msgs }
+        <div>
+            <div className="chat-view border margin-top">
+                { msgs }
+            </div>
+            <InputWithRouter id={props.id}/>
         </div>
     );
 }
@@ -98,19 +102,30 @@ function ChatView(props) {
 
 // Component for the input box
 function Input(props) {
+    let text = props.chat.text;
+    let id = props.id;
     return (
         <InputGroup className="mb-3">
             <FormControl 
                 as="textarea"
                 rows="2"
                 placeholder="Send a Message"
+                value={ text }
+                onChange={
+                    (ev) => changed({text: ev.target.value})
+                }
+                // onKeyPress={(ev) => send_msg_enter(ev, id, text)}
             />
             <InputGroup.Append>
-                <Button variant="outline-secondary"><div>Send</div><div className="small-font">Or Press Clrt + Enter</div></Button>
+                <Button variant="outline-secondary"
+                        onClick={ () => send_msg(id, text) }
+                ><div>Send</div><div className="small-font">Or Press Clrt + Enter</div></Button>
             </InputGroup.Append>
         </InputGroup>
     );
 }
+
+const InputWithRouter = withRouter(connect(({ chat }) => ({ chat }))(Input));
 
 // Component for a single message
 function Message(props) {
@@ -120,6 +135,27 @@ function Message(props) {
             <div className="col-sm-8">{ props.msg }</div>
         </div>
     );
+}
+
+function changed(data) {
+    store.dispatch({
+        type: 'CHANGE_TEXT',
+        data: data,
+    });
+}
+
+function send_msg_enter(ev, id, text) {
+    if (ev.charCode === 13) {
+        send_msg(id);
+    }
+}
+
+function send_msg(id, text) {
+    channels[id].push("new_msg", {text: text})
+    store.dispatch({
+        type: 'CHANGE_TEXT',
+        data: {text: ""},
+    });
 }
 
 
