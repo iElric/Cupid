@@ -18,6 +18,7 @@ alias Cupid.Tags.Tag
 pw = Argon2.hash_pwd_salt("password1234")
 
 Repo.insert!(%User{name: "Alice", email: "alice@cupid.com", gender: "Female", password_hash: pw})
+Repo.insert!(%User{name: "Jenna", email: "jenna@cupid.com", gender: "Female", password_hash: pw})
 Repo.insert!(%User{name: "Bob", email: "bob@cupid.com", gender: "Male", password_hash: pw})
 Repo.insert!(%User{name: "Tom", email: "tom@cupid.com", gender: "Male", password_hash: pw})
 Repo.insert!(%User{name: "Jerry", email: "jerry@cupid.com", gender: "Male", password_hash: pw})
