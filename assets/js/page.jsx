@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink,
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    NavLink, Redirect, withRouter,
 } from "react-router-dom";
 import { Navbar, Nav, Col } from "react-bootstrap";
 import { Provider, connect } from "react-redux";
@@ -20,6 +20,12 @@ import Index from "./index"
 import ChangeDesc from "./change_desc"
 import store from "./store";
 import { FaHeartbeat, FaHome, FaRegUser, FaRegComment } from "react-icons/fa";
+import { Index } from "./mock_page"
+import Community from "./community"
+import DebugRouter from "./debug_router"
+import { get_friends } from "./ajax"
+import { init_socket, socket, channels } from "./socket";
+
 
 export default function init_page(root) {
   let tree = (
@@ -29,6 +35,7 @@ export default function init_page(root) {
   );
   ReactDOM.render(tree, root);
 }
+
 
 function Page(props) {
   return (
@@ -48,8 +55,8 @@ function Page(props) {
                 activeClassName="active"
                 className="nav-link"
               >
-                < FaRegUser /> Profile
-                    </NavLink>
+                <FaRegUser /> Profile
+              </NavLink>
             </Nav.Item>
             <Nav.Item className="col-2">
               <NavLink
@@ -60,15 +67,14 @@ function Page(props) {
               >
                 <FaHeartbeat /> Discover
                 </NavLink>
-            </Nav.Item>
-            <Nav.Item className="col-2">
-              <NavLink
-                to="/matches"
-                exact
-                activeClassName="active"
-                className="nav-link"
-              >
-                <FaRegComment /> Matches
+              </Nav.Item>
+              <Nav.Item className="col-2">
+                <NavLink
+                  to="/community"
+                  activeClassName="active"
+                  className="nav-link"
+                >
+                  <FaRegComment /> Community
                 </NavLink>
             </Nav.Item>
           </Nav>
@@ -79,71 +85,92 @@ function Page(props) {
       </Navbar>
 
       <Switch>
-        <Route exact path="/">
-          <Index />
-        </Route>
+          <Route exact path="/">
+              <Index />
+          </Route>
         <Route exact path="/login">
           <Login />
-          <NavLink
-            to="/sign_up"
-            exact
-            activeClassName="active"
-            className="nav-link"
-          >
-            Don't have an account? Sign Up Now!
-          </NavLink>
         </Route>
 
         <Route exact path="/sign_up">
           <SignUp />
         </Route>
 
-        <Route exact path="/all_photos">
+        <PrivateRoute exact path="/all_photos">
           <AllPhotos />
-        </Route>
+        </PrivateRoute>
 
-        <Route exact path="/profile">
+          <PrivateRoute path="/community">
+              <Community />
+          </PrivateRoute>
+
+          {/* <PrivateRoute exact path="/community/:id">
+              <Community />
+          </PrivateRoute> */}
+
+        <PrivateRoute exact path="/profile">
           <Profile />
-        </Route>
+        </PrivateRoute>
 
-        <Route exact path="/upload_new_photo">
+        <PrivateRoute exact path="/upload_new_photo">
           <UploadNewPhoto />
-        </Route>
+        </PrivateRoute>
         <Route exact path="/matches">
           <Matches />
         </Route>
-        <Route exact path="/add_tags">
+        <PrivateRoute exact path="/add_tags">
           <AddTag />
-        </Route>
+        </PrivateRoute>
 
-        <Route exact path="/users">
+        <PrivateRoute exact path="/users">
           <Users />
-        </Route>
+        </PrivateRoute>
 
-        <Route exact path="/change_desc">
+        <PrivateRoute exact path="/change_desc">
           <ChangeDesc />
-        </Route>
+        </PrivateRoute>
 
       </Switch>
     </Router>
   );
 }
 
-function PrivateRoute() {
-
+function PrivateRoute({ children, ...rest }) {
+    let session = store.getState().session;
+    return (
+        <Route
+            {...rest}
+            render={( { location }) =>
+                session  ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: '/login',
+                            state: { from: location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
 }
 
 
-let Session = connect(({ session }) => ({ session }))(({ session, dispatch }) => {
+let Session = withRouter(connect(({session}) => ({session}))(({session, dispatch, history}) => {
   function logout(ev) {
     ev.preventDefault();
     localStorage.removeItem('session');
     dispatch({
       type: 'LOG_OUT',
     });
+    history.push('/');
   }
 
   if (session) {
+    init_socket(session);
+    get_friends(socket);
+    console.log('hahahah');
     return (
       <Nav>
         <Nav.Item>
@@ -166,4 +193,7 @@ let Session = connect(({ session }) => ({ session }))(({ session, dispatch }) =>
       </Nav>
     );
   }
-});
+}));
+
+
+

@@ -4,8 +4,12 @@ defmodule CupidWeb.UserController do
   alias Cupid.Users
   alias Cupid.Users.User
   alias Cupid.GeocodeApi
+  alias Cupid.Matches
 
   action_fallback CupidWeb.FallbackController
+
+  plug CupidWeb.Plugs.RequireAuth 
+    when action in [:friends]
 
   def index(conn, _params) do
     users = Users.list_users()
@@ -14,11 +18,20 @@ defmodule CupidWeb.UserController do
 
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Users.create_user(user_params) do
+      token = Phoenix.Token.sign(conn, "session", user.id)
+      resp = %{token: token, user_id: user.id, user_name: user.name}
       conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user))
-      |> render("show.json", user: user)
+      |> put_resp_header("content-type", "application/json; charset=UTF-8")
+      |> send_resp(:created, Jason.encode!(resp))
     end
+  end
+
+  def friends(conn, _params) do
+    user = conn.assigns[:current_user]
+    friends = Matches.list_friends(user.id)
+    conn
+    |> put_resp_header("content-type", "application/json; charset=UTF-8")
+    |> send_resp(:ok, Jason.encode!(friends))
   end
 
   def show(conn, %{"id" => id}) do

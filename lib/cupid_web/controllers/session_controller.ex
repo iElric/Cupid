@@ -14,7 +14,7 @@ defmodule CupidWeb.SessionController do
       |> put_resp_header("content-type", "application/json; charset=UTF-8")
       |> send_resp(:created, Jason.encode!(resp))
     else
-      resp = %{errors: ["Authentication Failed"]}
+      resp = %{errors: ["Authentication failed, please check your email and password!"]}
       conn
       |> put_resp_header("content-type", "application/json; charset=UTF-8")
       |> send_resp(:unauthorized, Jason.encode!(resp))

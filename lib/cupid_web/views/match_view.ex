@@ -1,6 +1,7 @@
 defmodule CupidWeb.MatchView do
   use CupidWeb, :view
   alias CupidWeb.MatchView
+  alias CupidWeb.UserView 
 
   def render("index.json", %{matches: matches}) do
     %{data: render_many(matches, MatchView, "match.json")}
@@ -13,5 +14,10 @@ defmodule CupidWeb.MatchView do
   def render("match.json", %{match: match}) do
     IO.inspect(match)
     %{id: match.id, name: match.name}
+  #   %{
+  #     id: match.id,
+  #     user1: UserView.render("user.json", %{user: match.users_1}),
+  #     user2: UserView.render("user.json", %{user: match.users_2}),
+  # }
   end
 end

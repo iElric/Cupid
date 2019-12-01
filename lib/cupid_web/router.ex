@@ -29,6 +29,7 @@ defmodule CupidWeb.Router do
     resources "/users", UserController
     post "/find_friends", InterestsController, :browse
     get "/match_photos/:id", PhotoController, :match_photo
+    get "/friends", UserController, :friends
   end
 
   pipeline :api do
@@ -39,7 +40,9 @@ defmodule CupidWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/matches", MatchController, :index
     get "/*path", PageController, :index
+    
   end
 
   # Other scopes may use custom stacks.

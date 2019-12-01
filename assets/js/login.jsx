@@ -1,26 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
 
-import { connect } from "react-redux";
-import { Form, Button, Alert } from "react-bootstrap";
-import { Redirect } from "react-router";
+import { connect } from 'react-redux';
+import { Form, Button, Alert} from 'react-bootstrap';
 
-import { submit_login } from "./ajax";
+import { submit_login } from './ajax';
+import {Link, withRouter} from "react-router-dom";
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      redirect: null
-    };
-  }
+    }
 
-  redirect(path) {
-    this.setState({
-      redirect: path
-    });
-  }
+    redirect() {
+        const { history, location } = this.props;
+        let { from } = location.state || {from: { pathname: '/'}}
+        if (history) history.push(from);
+    }
 
   changed(data) {
     this.props.dispatch({
@@ -29,60 +25,64 @@ class Login extends React.Component {
     });
   }
 
-  render() {
-    if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />;
-    }
-
-    let { email, password, errors } = this.props;
+render() {
+    let {email, password, errors} = this.props;
     let error_msg = null;
     if (errors) {
-      error_msg = <Alert variant="danger">{errors}</Alert>;
+        error_msg = <Alert variant="danger">{ errors }</Alert>
     }
     return (
-      <div>
-        <div className="row justify-content-center">
-          <h1>Log In</h1>
+        <div>
+            <div className="row justify-content-center">
+            <h1>Log In</h1>
         </div>
-        {error_msg}
-        <div className="row justify-content-center">
-          <Form.Group controlId="email">
-            <Form.Control
-              type="text"
-              placeholder="Email"
-              onChange={ev => this.changed({ email: ev.target.value })}
-              className="form-short-input"
-            />
-          </Form.Group>
-        </div>
-        <div className="row justify-content-center">
-          <Form.Group controlId="password">
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              onChange={ev => this.changed({ password: ev.target.value })}
-              className="form-short-input"
-            />
-          </Form.Group>
-        </div>
-        <div className="row justify-content-center">
-          <Form.Group controlId="submit">
-            <Button
-              variant="primary"
-              onClick={() => submit_login(this)}
-              className="border_button"
-            >
-              Log in
+            { error_msg }
+            <div className="row justify-content-center">
+            <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="text"
+                            defaultValue={email}
+                            placeholder="Email"
+                            className="form-short-input"
+                            onChange={
+                (ev) => this.changed({email: ev.target.value})} />
+            </Form.Group>
+            </div>
+
+            <div className="row justify-content-center">
+            <Form.Group controlId="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password"
+                            defaultValue={password}
+                            placeholder="Password"
+                            className="form-short-input"
+                            onChange={
+                (ev) => this.changed({password: ev.target.value})} />
+            </Form.Group>
+            </div>
+
+            <div className="row justify-content-center">
+            <Form.Group controlId="submit">
+            <Button variant="primary" 
+                    className="border_button"
+                    onClick={() => submit_login(this)}>
+                Log in
             </Button>
-          </Form.Group>
+            </Form.Group>
+            </div>
+            <div>
+                <Link
+                    to="/sign_up">
+                    Don't have an account? Sign Up Now!
+                </Link>
+            </div>
         </div>
-      </div>
-    );
-  }
+        );
+    }
 }
 
 function state2props(state) {
-  return state.login;
+    return state.forms.login;
 }
 
-export default connect(state2props)(Login);
+export default withRouter(connect(state2props)(Login));
