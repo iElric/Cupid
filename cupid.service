@@ -1,0 +1,16 @@
+[Unit]
+Description=Cupid
+
+[Service]
+Type=simple
+User=cupid
+Group=cupid
+Restart=on-failure
+Environment=MIX_ENV=prod "PORT=5188"
+Environment=LANG=en_US.UTF-8
+
+WorkingDirectory=/home/cupid/cupid
+ExecStart=/bin/bash /home/cupid/cupid/start.sh
+
+[Install]
+WantedBy=multi-user.target
