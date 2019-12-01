@@ -53,7 +53,8 @@ export function get(path) {
 export function register(form) {
     let state = store.getState();
     let data = state.forms.signup;
-    post('/users', {'user': data})
+    console.log(data)
+    post('/users', { 'user': data })
         .then((resp) => {
             if (resp.token) {
                 localStorage.setItem('session', JSON.stringify(resp));
@@ -76,27 +77,26 @@ export function submit_login(form) {
     let data = state.forms.login;
 
     post('/sessions', data)
-    .then((resp) => {
-        if (resp.token) {
-            localStorage.setItem('session', JSON.stringify(resp));
-            store.dispatch({
-                type: 'LOG_IN',
-                data: resp,
-            });
-            store.dispatch({
-                type: 'RESET_LOGIN'
-            });
-            form.redirect();
-            console.log(resp);
-        }
-        else {
-            console.log(resp.errors);
-            store.dispatch({
-                type: 'CHANGE_LOGIN',
-                data: {errors: resp.errors},
-            });
-        }
-    });
+        .then((resp) => {
+            if (resp.token) {
+                localStorage.setItem('session', JSON.stringify(resp));
+                store.dispatch({
+                    type: 'LOG_IN',
+                    data: resp,
+                });
+                store.dispatch({
+                    type: 'RESET_LOGIN'
+                });
+                form.redirect();
+                console.log(resp);
+            } else {
+                console.log(resp.errors);
+                store.dispatch({
+                    type: 'CHANGE_LOGIN',
+                    data: { errors: resp.errors },
+                });
+            }
+        });
 }
 
 export function get_profile() {
@@ -313,19 +313,17 @@ export function like_user(id) {
 export function get_friends(socket) {
     get('/friends').then((resp) => {
         if (resp) {
-            store.dispatch(
-                {
-                    type: 'CHANGE_FRIENDS',
-                    data: resp
-                }
-            );
-            if(socket) {
+            store.dispatch({
+                type: 'CHANGE_FRIENDS',
+                data: resp
+            });
+            if (socket) {
                 // for each friend, initialize a channel
                 console.log(resp);
                 _.forEach(resp, (f) => {
-                    init_channel(f.id, socket)
-                }
-                    
+                        init_channel(f.id, socket)
+                    }
+
                 );
                 console.log(resp);
             }
@@ -339,12 +337,10 @@ export function get_all_msg() {
     get('all_msg').then(
         (resp) => {
             if (resp) {
-                store.dispatch(
-                    {
-                        type: 'NEW_MSG',
-                        data: resp
-                    }
-                );
+                store.dispatch({
+                    type: 'NEW_MSG',
+                    data: resp
+                });
             } else {
                 console.log(resp.errors);
             }

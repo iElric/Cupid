@@ -6,7 +6,7 @@ let default_reg = {
     password: "",
     name: "",
     gender: "Male",
-    description: ""
+    desc: ""
 };
 
 function signup(
@@ -56,13 +56,14 @@ function all_photos(st0 = { photos: null, errors: null }, action) {
 }
 
 
-function profile(st0 = { 
-    email: null, 
-    name: null, 
-    desc: null, 
-    my_interests: null, 
-    hint: null, 
-    errors: null }, action) {
+function profile(st0 = {
+    email: null,
+    name: null,
+    desc: null,
+    my_interests: null,
+    hint: null,
+    errors: null
+}, action) {
     switch (action.type) {
         case "SHOW_PROFILE":
             return Object.assign({}, st0, action.data);
@@ -102,7 +103,7 @@ function users(st0 = { info: null, current_photos: null, user_index: 0, photo_in
     }
 }
 
-function chat(st0 = {text: ""}, action) {
+function chat(st0 = { text: "" }, action) {
     switch (action.type) {
         case "CHANGE_TEXT":
             return Object.assign({}, st0, action.data);
@@ -140,7 +141,7 @@ function session(st0 = session0, action) {
 function geolocation(st0 = { latitude: 0, longitude: 0 }, action) {
     switch (action.type) {
         case "Update_Location":
-    return Object.assign({}, st0, action.data);
+            return Object.assign({}, st0, action.data);
         default:
             return st0;
     }
