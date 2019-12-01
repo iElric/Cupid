@@ -111,7 +111,6 @@ function Input(props) {
       <InputGroup.Append>
         <Button variant="outline-secondary" onClick={() => send_msg(id, text)}>
           <div>Send</div>
-          <div className="small-font">Or Press Enter</div>
         </Button>
       </InputGroup.Append>
     </InputGroup>
