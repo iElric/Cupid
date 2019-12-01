@@ -80,7 +80,6 @@ function ChatView(props) {
     // let mock = [{name: "tom", msg: "hello"}, 
     // {name: "alice", msg: "hello!"}, 
     // {name: "tom", msg: "let's talke"}]
-    console.log(props.mbox);
     let msgs = _.map(
         props.mbox, (msg, index) => (
             <Message 

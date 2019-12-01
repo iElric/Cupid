@@ -20,7 +20,6 @@ import Index from "./index"
 import ChangeDesc from "./change_desc"
 import store from "./store";
 import { FaHeartbeat, FaHome, FaRegUser, FaRegComment } from "react-icons/fa";
-import { Index } from "./mock_page"
 import Community from "./community"
 import DebugRouter from "./debug_router"
 import { get_friends } from "./ajax"
