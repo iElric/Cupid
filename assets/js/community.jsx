@@ -72,19 +72,26 @@ function Friend(props) {
 
 // Component for the box containing all the chat contents
 function ChatView(props) {
-  // expected format for props.mbox
-  // let mock = [{name: "tom", msg: "hello"},
-  // {name: "alice", msg: "hello!"},
-  // {name: "tom", msg: "let's talke"}]
-  let msgs = _.map(props.mbox, (msg, index) => (
-    <Message key={"msg_" + index} name={msg.name} msg={msg.msg} />
-  ));
-  return (
-    <div>
-      <div className="chat-view border margin-top long_word overflow-auto">{msgs}</div>
-      <InputWithRouter id={props.id} />
-    </div>
-  );
+    // expected format for props.mbox
+    // let mock = [{name: "tom", msg: "hello"}, 
+    // {name: "alice", msg: "hello!"}, 
+    // {name: "tom", msg: "let's talke"}]
+    let msgs = _.map(
+        props.mbox, (msg, index) => (
+            <Message 
+                key={"msg_" + index} 
+                name={msg.name} 
+                msg={msg.msg} />
+        )
+    );
+    return (
+        <div>
+            <div className="chat-view border margin-top long_word overflow-auto">
+                { msgs }
+            </div>
+            <InputWithRouter id={props.id}/>
+        </div>
+    );
 }
 
 // Component for the input box
@@ -109,6 +116,7 @@ function Input(props) {
       </InputGroup.Append>
     </InputGroup>
   );
+
 }
 
 const InputWithRouter = withRouter(connect(({ chat }) => ({ chat }))(Input));
