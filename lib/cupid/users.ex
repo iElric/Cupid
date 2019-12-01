@@ -142,7 +142,16 @@ defmodule Cupid.Users do
       sin_lan = :math.sin(curr_lan) * :math.sin(one_lan)
       cos_val = :math.cos(curr_lan) * :math.cos(one_lan)
       cos_val = cos_val * :math.cos(curr_lon - one_lon)
-      dist = :math.acos(sin_lan + cos_val) * km_radius
+      sum_up = sin_lan + cos_val
+      # the following statement is to avoid the floating point operation rounding error
+      cond do
+        sum_up > 1.0 ->
+          sum_up = 1.0
+        sum_up < -1.0 ->
+          sum_up = -1.0
+        :else ->
+      end
+      dist = :math.acos(sum_up) * km_radius
       Map.put(x, :distance, dist)
     end)
     |> Enum.filter(fn x -> x.distance < 5 end) # return all the ppl within 5km distance
