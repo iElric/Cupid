@@ -183,7 +183,7 @@ hr {
     color: red;
 }
 
-.small-font{
+.small-font {
     font-size: 60%;
 }
 
@@ -193,7 +193,7 @@ hr {
     padding: 2rem;
 }
 
-.margin-top{
+.margin-top {
     margin-top: 2ex;
 }
 
@@ -205,3 +205,10 @@ hr {
 //    z-index: 100;
 //    padding: 0;
 //}
+.community {
+    height: 500px;
+}
+
+.long_word {
+    word-wrap: break-word;
+}
