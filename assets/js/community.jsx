@@ -90,7 +90,7 @@ function ChatView(props) {
     );
     return (
         <div>
-            <div className="chat-view border margin-top">
+            <div className="chat-view border margin-top overflow-auto">
                 { msgs }
             </div>
             <InputWithRouter id={props.id}/>
