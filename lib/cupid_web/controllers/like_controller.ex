@@ -24,7 +24,7 @@ defmodule CupidWeb.LikeController do
       Likes.delete_like(reverse_realtion)
       # add to match
       Matches.create_match(%{user1_id: like_to_id, user2_id: like_from_id})
-      send_resp(conn, :no_content, "")
+      render(conn, "like_user.json", like: "")
     else
       like_params = %{
         like_from_id: like_from_id,

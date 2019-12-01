@@ -13,4 +13,8 @@ defmodule CupidWeb.LikeView do
   def render("like.json", %{like: like}) do
     %{id: like.id}
   end
+
+  def render("like_user.json", _) do
+    %{data: "success"}
+  end
 end

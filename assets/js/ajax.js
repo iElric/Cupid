@@ -276,5 +276,6 @@ export function get_my_interests_photo_by_id(id) {
 export function like_user(id) {
     post("/likes/", { like_to_id: id }).then(resp => {
         // do nothing
+        console.log(resp);
     });
 }
