@@ -8,7 +8,7 @@ defmodule CupidWeb.UserController do
 
   action_fallback CupidWeb.FallbackController
 
-  plug CupidWeb.Plugs.RequireAuth 
+  plug CupidWeb.Plugs.RequireAuth
     when action in [:friends]
 
   def index(conn, _params) do

@@ -32,7 +32,7 @@ defmodule Cupid.Users.User do
   def changeset(user, attrs) do
     user
     # cast keys from attrs passed into the change set
-    |> cast(attrs, [:email, :name, :password, :password_confirmation, :gender, :lan, :lon, :addr])
+    |> cast(attrs, [:email, :name, :password, :password_confirmation, :gender, :lan, :lon, :addr, :desc])
       # this validation will check if both "password" and "password_confirmation" in the parameter map matches
     |> validate_confirmation(:password)
     |> validate_length(:password, min: 12) # too short

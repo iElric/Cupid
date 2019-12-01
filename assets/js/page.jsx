@@ -73,7 +73,7 @@ function Page(props) {
                   activeClassName="active"
                   className="nav-link"
                 >
-                  <FaRegComment /> Community
+                  <FaRegComment /> Friends
                 </NavLink>
             </Nav.Item>
           </Nav>
