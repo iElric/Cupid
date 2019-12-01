@@ -41,6 +41,7 @@ defmodule Cupid.Users do
   """
   def authenticate_user(email, password) do
     user = Repo.get_by(User, email: email)
+
     case Argon2.check_pass(user, password) do
       {:ok, user} -> user
       _else -> nil
@@ -122,6 +123,7 @@ defmodule Cupid.Users do
     pi = 3.14159265
     lan = pi * lan / 180
     lon = pi * lon / 180
+
     Repo.get_by(User, id: id)
     |> Ecto.Changeset.change(%{lan: lan, lon: lon, addr: addr})
     |> Repo.update()
@@ -129,11 +131,12 @@ defmodule Cupid.Users do
 
   def get_user_by_radius(id) do
     curr_user = Repo.get_by(User, id: id)
-    IO.inspect curr_user
+    IO.inspect(curr_user)
     curr_lan = Decimal.to_float(curr_user.lan)
     curr_lon = Decimal.to_float(curr_user.lon)
 
     km_radius = 6373
+
     list_users()
     |> Enum.filter(fn x -> x.lan !== 0 and x.lon !== 0 and x.id !== id end)
     |> Enum.map(fn x ->
@@ -144,18 +147,22 @@ defmodule Cupid.Users do
       cos_val = cos_val * :math.cos(curr_lon - one_lon)
       sum_up = sin_lan + cos_val
       # the following statement is to avoid the floating point operation rounding error
-      cond do
-        sum_up > 1.0 ->
-          sum_up = 1.0
-        sum_up < -1.0 ->
-          sum_up = -1.0
-        :else ->
-      end
+      sum_up =
+        if sum_up > 1.0 do
+          1.0
+        else
+          if sum_up < -1.0 do
+            -1.0
+          else
+            sum_up
+          end
+        end
+
       dist = :math.acos(sum_up) * km_radius
       Map.put(x, :distance, dist)
     end)
-    |> Enum.filter(fn x -> x.distance < 5 end) # return all the ppl within 5km distance
+    # return all the ppl within 5km distance
+    |> Enum.filter(fn x -> x.distance < 5 end)
     |> Enum.map(fn x -> x.id end)
   end
-
 end
