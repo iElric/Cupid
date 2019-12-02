@@ -24,6 +24,8 @@ import Community from "./community"
 import DebugRouter from "./debug_router"
 import { get_friends } from "./ajax"
 import { init_socket, socket, channels } from "./socket";
+import { AlertList, Alert, AlertContainer } from "react-bs-notifier";
+
 
 
 export default function init_page(root) {
@@ -82,6 +84,7 @@ function Page(props) {
           <Session />
         </Col>
       </Navbar>
+      <Alter />
 
       <Switch>
           <Route exact path="/">
@@ -166,10 +169,10 @@ let Session = withRouter(connect(({session}) => ({session}))(({session, dispatch
     history.push('/');
   }
 
+
   if (session) {
     init_socket(session);
     get_friends(socket);
-    console.log('hahahah');
     return (
       <Nav>
         <Nav.Item>
@@ -193,6 +196,28 @@ let Session = withRouter(connect(({session}) => ({session}))(({session, dispatch
     );
   }
 }));
+
+let Alter = connect(({ noti }) => ({ noti }))(({ noti, dispatch }) => {
+
+  function onDismiss(alert) {
+    dispatch({
+      type: 'REMOVE_ALT',
+      data: alert
+    });
+  }
+
+  return (
+    <AlertList
+					alerts={ noti }
+					timeout={ 1000 }
+					dismissTitle="Begone!"
+          onDismiss={ onDismiss }
+				/>
+  );
+
+
+
+});
 
 
 

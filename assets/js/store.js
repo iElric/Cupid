@@ -1,5 +1,6 @@
 import { createStore, combineReducers } from "redux";
 import deepFreeze from "deep-freeze-strict";
+import _ from "lodash";
 
 let default_reg = {
     email: "",
@@ -131,7 +132,6 @@ function session(st0 = session0, action) {
         case 'LOG_IN':
             return action.data;
         case 'LOG_OUT':
-            console.log("log out")
             return null;
         default:
             return st0;
@@ -167,6 +167,23 @@ function msg_box(st0 = {}, action) {
     }
 }
 
+function noti(st0 = [], action) {
+    switch (action.type) {
+        case 'NEW_MATCH':
+            let alt = {
+                id: (new Date()).getTime(),
+                type: action.data.type,
+                headline: action.data.type,
+                message: action.data.message
+              };
+            return _.concat(st0, alt);
+        case 'REMOVE_ALT':
+            return _.filter(st0, (n) => (n.id !== action.data.id));
+        default:
+            return st0;
+    }
+}
+
 
 function root_reducer(st0, action) {
     let reducer = combineReducers({
@@ -181,6 +198,7 @@ function root_reducer(st0, action) {
         friends,
         msg_box,
         chat,
+        noti
     });
     return deepFreeze(reducer(st0, action));
 }

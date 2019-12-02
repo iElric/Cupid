@@ -19,8 +19,13 @@ export function init_socket(session) {
   let channel = socket.channel("notification:"+session.user_id, {})
 channel.join()
   .receive("ok", resp => { 
-    console.log("Joined successfully", resp) 
     channels['notification'] = channel;
+    channel.on("new_match", data => {
+      store.dispatch({
+        type: 'NEW_MATCH',
+        data: data
+      });
+    });
   })
   .receive("error", resp => { console.log("Unable to join", resp) });
 }
@@ -29,8 +34,6 @@ export function init_channel(id, socket) {
   let c = socket.channel("room:"+id, {});
   c.join()
     .receive("ok", resp => { 
-      console.log(`Joined room: ${id} successfully! `, resp) 
-      console.log(channels);
       channels[id] = c;
       store.dispatch({
         type: 'NEW_MSG',

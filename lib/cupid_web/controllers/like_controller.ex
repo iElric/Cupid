@@ -4,6 +4,7 @@ defmodule CupidWeb.LikeController do
   alias Cupid.Likes
   alias Cupid.Likes.Like
   alias Cupid.Matches
+  alias CupidWeb.Notification
 
   action_fallback CupidWeb.FallbackController
 
@@ -24,6 +25,12 @@ defmodule CupidWeb.LikeController do
       Likes.delete_like(reverse_realtion)
       # add to match
       Matches.create_match(%{user1_id: like_to_id, user2_id: like_from_id})
+      Notification.notify_success(like_from_id, 
+        "new_match", "A New Match", 
+        "The person you are interested in is also interested in you, let's chat!")
+      Notification.notify_success(like_to_id, 
+        "new_match", "A New Match", 
+        "A person you are interested in just liked interested in you, let's chat!")
       render(conn, "like_user.json", like: "")
     else
       like_params = %{

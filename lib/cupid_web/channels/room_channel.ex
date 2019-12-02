@@ -2,6 +2,7 @@ defmodule CupidWeb.RoomChannel do
     use CupidWeb, :channel
 
     alias Cupid.BackupAgent
+    alias CupidWeb.Notification
 
     def join("room:" <> room_id, _payload, socket) do
         room_id = room_id |> Integer.parse |> elem(0)

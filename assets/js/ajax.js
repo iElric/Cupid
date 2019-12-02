@@ -88,7 +88,6 @@ export function submit_login(form) {
                     type: 'RESET_LOGIN'
                 });
                 form.redirect();
-                console.log(resp);
             } else {
                 console.log(resp.errors);
                 store.dispatch({
