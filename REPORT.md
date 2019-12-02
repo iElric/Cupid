@@ -22,13 +22,13 @@ Yes
 * Wrote the backend logic of uploading photos, fetching photos, liking
   a user
 * Wrote the backend logic of recommending users that potentially can
-  become a match
-* Debugged an asynchronous problem of getting recommendations 
+  become a match abd debugged an asynchronous problem of getting
+  recommendations 
 
 **Sikang Hu:** 
 * Implemented user signup and login
 * Enabled chat functionalities and push real-time notifications when
-  the users become a match
+  the users become a match or receiving a message 
 
 **Lingmiao Qiu:** 
 * Handled location API call, get the current location and transfer
@@ -85,7 +85,9 @@ if both parties liked each other (become a match).
   Once people are matched, they can find and contact anyone on their
   matches at any time. In addition, our app saves user chat messages
   on a backup agent. So users can always go back and pick up past
-  conversations. 
+  conversations.
+* Users can receive notifications on all the pages. (do not need
+  interactions)  
 
 ## For each project requirement above, how does your app meet that requirement?
 * We do feel that our application is more ambitious and fun than
@@ -168,6 +170,12 @@ right. This strategy enables us to separate components (Contact,
 Message and etc.) and generate them dynamically. Also, separating
 components makes it easier to modify their.
 
+**Notifications:** For each logged in user, he/she will join in a
+notification channel room. This is only for notifications. In this
+way, when something happened in the back-end, such as other users send
+a message to another user or two users has become a match, we are able
+to send real-time notifications to specific users.  
+
 ## What additional features did you implement?
 * We did use the HTML location API. Our application is a
   location-based dating app. When a user opens the app, the app will
@@ -181,7 +189,8 @@ components makes it easier to modify their.
   matches chat page. Users can chat with their matches in our
   application. The message is sent from the sender to the receiver
   with real time updates. What’s more, a notification will be sent
-  when two users become a match
+  when a user has received a message or two users become a match. We
+  can add more even to notify if we want.
 * We build our app entirely as a Single Page Application with Redux
   and React-Router.
 
@@ -216,13 +225,15 @@ and optimize our projects.
   are still null. We proceed only we get the value. In this way, we
   solve the asynchronous problem.
 * Compared to the game project, the channel part is more complex since
-  we implement the chat functionality. Instead using a single channel
-  and using handle out to filter by id. We let the user to join
-  multiple channel. For each matched people, the user have to join a
-  channel with him/her. By doing this, the speed of passing message
-  should be faster since each channel process its own message. What’s
-  more, it simplify the code complexity. The messages are sent through
-  channel and can be backuped in a backup agent.   
+  we implement the chat functionality and notification functionality.
+  Instead using a single channel and using handle out to filter by id.
+  We let the user to join multiple chat channels and a notification
+  channel. For each matched people, the user have to join a channel
+  with him/her. By doing this, the speed of passing message should be
+  faster since each channel process its own message. What’s more, we
+  separate chat and notification and simplify the code complexity. The
+  messages are sent through channel and can be backuped in a backup
+  agent.   
 
 
 
