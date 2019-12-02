@@ -32,7 +32,8 @@ config :cupid, CupidWeb.Endpoint,
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start each relevant endpoint:
 #
-#     config :cupid, CupidWeb.Endpoint, server: true
+#
 #
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.
+config :cupid, CupidWeb.Endpoint, server: true
