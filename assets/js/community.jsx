@@ -54,7 +54,14 @@ function Community(props) {
       </div>
 
       <div className="col-md-9 border padding margin-top">
-        <Switch>{routes}</Switch>
+        <Switch>
+            {routes}
+            <Route
+            path={`${url}/`}
+            exact
+            children={() => (<div className="title">Pick a Friend to Chat</div>)}
+            />
+        </Switch>
       </div>
     </Row>
   );

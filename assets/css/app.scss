@@ -167,9 +167,14 @@ hr {
 }
 
 .border_button {
+    width: 15rem;
+    padding: 0.5rem 1.5rem;
     border-radius: 5rem;
     font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
 }
+
 
 .profile {
     margin-bottom: 20px;
@@ -211,4 +216,13 @@ hr {
 
 .long_word {
     word-wrap: break-word;
+}
+
+.title {
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+    padding: 20% 0%;
+    font-size: 1.75rem;
+    font-weight: bold;
 }

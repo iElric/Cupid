@@ -27,6 +27,7 @@ class Login extends React.Component {
 
 render() {
     let {email, password, errors} = this.props;
+    const { history } = this.props;
     let error_msg = null;
     if (errors) {
         error_msg = <Alert variant="danger">{ errors }</Alert>
@@ -64,17 +65,18 @@ render() {
             <div className="row justify-content-center">
             <Form.Group controlId="submit">
             <Button variant="primary" 
-                    className="border_button"
+                    className="border_button btn-block"
                     onClick={() => submit_login(this)}>
-                Log in
+                    Log in
             </Button>
             </Form.Group>
             </div>
-            <div>
-                <Link
-                    to="/sign_up">
-                    Don't have an account? Sign Up Now!
-                </Link>
+            <div className="row justify-content-center">
+            <Button variant="outline-primary" 
+                    className="border_button"
+                    onClick={() => history.push('/sign_up')}>
+                Sign Up
+            </Button>
             </div>
         </div>
         );
