@@ -26,6 +26,13 @@ channel.join()
         data: data
       });
     });
+    channel.on("add_friend", data => {
+      store.dispatch({
+        type: 'ADD_FRIEND',
+        data: data
+      });
+      init_channel(data.id, socket);
+    });
   })
   .receive("error", resp => { console.log("Unable to join", resp) });
 }
