@@ -13,7 +13,7 @@
     "deep-freeze-strict": "^1.1.1",
     "email-validator": "latest",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jss": "^9.8.7",
     "lodash": "^4.17.15",
     "phoenix": "file:../deps/phoenix",
